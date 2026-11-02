@@ -1,0 +1,150 @@
+<div class="container py-3">
+  <div
+    class="card border-0 mb-4"
+    style="background: linear-gradient(135deg, #922b21 0%, #d68910 100%)"
+  >
+    <div class="card-body py-4 px-4">
+      <div class="d-flex align-items-center">
+        <div class="bg-white bg-opacity-25 rounded-3 p-3 me-3">
+          <i class="bi bi-gear-fill text-white fs-3"></i>
+        </div>
+        <div class="text-white">
+          <h4 class="fw-bold mb-1">Administrator Dashboard</h4>
+          <p class="mb-0 opacity-75">Manage system settings and configurations</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-trash3-fill"
+        iconColor="#dc2626"
+        [id]="0"
+        title="Deletion/Cancellation"
+        description="Manage policy deletions and cancellations"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-people-fill"
+        iconColor="#2563eb"
+        title="Users"
+        [id]="1"
+        description="Manage system users and permissions"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-currency-exchange"
+        iconColor="#16a34a"
+        title="Currency Rates"
+        description="Update exchange rates and currencies"
+        [id]="2"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-airplane-fill"
+        iconColor="#9333ea"
+        title="Travel Agencies"
+        [id]="3"
+        description="Manage registered travel agencies"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-building-fill"
+        iconColor="#ea580c"
+        title="Company Offices"
+        [id]="4"
+        description="Manage company office locations"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-wallet-fill"
+        iconColor="#0891b2"
+        title="Accounts"
+        [id]="5"
+        description="Manage financial accounts and records"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-percent"
+        iconColor="#ca8a04"
+        title="Agencies Commission"
+        [id]="6"
+        description="Configure commission rates and settings"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-tags-fill"
+        iconColor="#db2777"
+        title="Travel Price Table"
+        [id]="7"
+        description="Update travel insurance pricing tables"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-box-arrow-up-right"
+        iconColor="#7c3aed"
+        [id]="8"
+        title="Export Travel Data"
+        description="Export travel insurance data reports"
+        (cardClick)="handleCardClick($event)"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-file-earmark-x-fill"
+        iconColor="#64748b"
+        title="Delete Draft Policies"
+        description="Remove draft and incomplete policies"
+        (cardClick)="deleteDraftPolicies()"
+      >
+      </app-admin-card>
+    </div>
+
+    <div class="col-xl-4 col-lg-6">
+      <app-admin-card
+        icon="bi-person-badge-fill"
+        iconColor="#b03bb4"
+        title="Export Current Insured Clients"
+        description="Export active client insurance data"
+        (cardClick)="exportCurrentInsuredClients()"
+      >
+      </app-admin-card>
+    </div>
+  </div>
+</div>

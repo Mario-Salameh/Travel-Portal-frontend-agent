@@ -1,0 +1,38 @@
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
+  @for (toast of toasts$ | async; track toast.id) {
+    <div
+      class="toast show"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      (mouseenter)="pause(toast.id)"
+      style="background-color: #fff; opacity: 1"
+      (mouseleave)="resume(toast.id)"
+    >
+      <div class="toast-header" [ngClass]="getClass(toast.messageType)">
+        @if (toast.messageType === 'error') {
+          <i class="bi bi-x-circle-fill me-2"></i>
+        }
+        @if (toast.messageType === 'success') {
+          <i class="bi bi-check-circle-fill me-2"></i>
+        }
+        @if (toast.messageType === 'warning') {
+          <i class="bi bi-exclamation-circle-fill me-2"></i>
+        }
+        @if (toast.messageType === 'info') {
+          <i class="bi bi-info-circle-fill me-2"></i>
+        }
+
+        <label class="me-auto">{{ toast.messageType | titlecase }}</label>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          (click)="close(toast.id)"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <div class="toast-body" [innerHTML]="toast.message"></div>
+    </div>
+  }
+</div>

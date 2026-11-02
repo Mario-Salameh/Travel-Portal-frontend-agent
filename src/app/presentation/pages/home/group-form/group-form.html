@@ -1,0 +1,412 @@
+<div class="container overflow-y-auto p-4" style="position: relative">
+  @if (windowWidth() > 1280) {
+    <img
+      [src]="currentStep() === 0 ? 'individual-step-one.svg' : 'individual-step-two.svg'"
+      style="
+        position: fixed;
+        bottom: -130px;
+        right: -120px;
+        width: 40%;
+        pointer-events: none;
+        z-index: 0;
+      "
+    />
+  }
+
+  <div class="row gy-3 mb-3" style="position: relative; z-index: 1">
+    <div class="col-lg-8 col-12">
+      <div class="container-fixed overflow-x-hidden">
+        <div class="d-flex align-items-center gap-2 mb-4">
+          @for (step of steps; track step.index) {
+            <div class="d-flex align-items-center">
+              <div
+                class="rounded-circle d-flex align-items-center justify-content-center"
+                [class.bg-primary]="currentStep() >= step.index"
+                [class.bg-secondary]="currentStep() < step.index"
+                [class.text-white]="true"
+                style="width: 32px; height: 32px; font-weight: 600"
+              >
+                {{ step.index + 1 }}
+              </div>
+              <span
+                class="ms-2 fw-semibold"
+                [class.text-primary]="currentStep() >= step.index"
+                [class.text-muted]="currentStep() < step.index"
+              >
+                {{ step.label }}
+              </span>
+            </div>
+            @if (step.index < steps.length - 1) {
+              <div
+                class="flex-grow-1 mx-2"
+                style="height: 2px"
+                [class.bg-primary]="currentStep() > step.index"
+                [class.bg-secondary]="currentStep() <= step.index"
+              ></div>
+            }
+          }
+        </div>
+
+        @if (currentStep() === 0) {
+          <div [formGroup]="companyInfoForm">
+            <h2>Company & Travel Information</h2>
+            <hr class="col-8 mt-1" />
+
+            <div class="row mb-3 mt-3 g-3">
+              <div class="col-12">
+                <app-form-text-input
+                  label="Group Travel Type"
+                  formControlName="groupTravelType"
+                  [options]="groupTravelTypes"
+                >
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-5 g-3">
+              <div class="col-6">
+                <app-form-text-input
+                  label="Company Name (English)"
+                  formControlName="companyNameEnglish"
+                >
+                </app-form-text-input>
+              </div>
+              <div class="col-6">
+                <app-form-text-input
+                  label="Company Name (Arabic)"
+                  formControlName="companyNameArabic"
+                >
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-3 g-3">
+              <div class="col-6">
+                <app-form-text-input
+                  label="Departure From"
+                  formControlName="departureFrom"
+                  [options]="countries"
+                  [disabled]="departureFromSelectedOption !== ''"
+                >
+                </app-form-text-input>
+              </div>
+
+              <div class="col-6">
+                <app-form-text-input
+                  label="Destination"
+                  formControlName="destination"
+                  [options]="countries"
+                >
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-3 g-3">
+              <div class="col-4">
+                <app-form-text-input
+                  label="Inception Date"
+                  formControlName="inceptionDate"
+                  inputType="date"
+                  [min]="today"
+                >
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input label="Period" formControlName="period" [options]="periods">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  label="Expiry Date"
+                  formControlName="expiryDate"
+                  inputType="date"
+                  [readonly]="true"
+                  [disabled]="true"
+                >
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start justify-content-end">
+              <button
+                type="button"
+                (click)="nextStep()"
+                class="btn btn-primary bi bi-caret-right-fill fs-6"
+                style="min-width: 150px"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        } @else if (currentStep() === 1) {
+          <form [formGroup]="policyInfoForm" (ngSubmit)="onSaveGroupPolicy()">
+            <h2>Group Members</h2>
+            <hr class="col-8 mt-1" />
+
+            <div class="card border mb-3 mt-3">
+              <div
+                class="card-header bg-primary bg-opacity-10 d-flex justify-content-between align-items-center py-3"
+              >
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-people-fill fs-5 text-primary"></i>
+                  <span class="fw-semibold">{{ members.length }} member(s) added</span>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm" (click)="openAddMemberForm()">
+                  <i class="bi bi-plus-lg me-1"></i> Add Member
+                </button>
+              </div>
+
+              <div class="card-body p-0">
+                @if (members.length === 0) {
+                  <div class="text-center py-5">
+                    <i class="bi bi-people fs-1 text-muted"></i>
+                    <h6 class="mt-3 text-muted">No members added yet</h6>
+                    <p class="text-muted small">
+                      Click "Add Member" to add the first member to this group policy
+                    </p>
+                  </div>
+                } @else {
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                      <thead class="table-light">
+                        <tr>
+                          <th class="ps-3">#</th>
+                          <th>Name</th>
+                          <th>DOB</th>
+                          <th>Age</th>
+                          <th>Passport</th>
+                          <th>Phone</th>
+                          <th>Add-ons</th>
+                          <th class="text-center">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @for (member of members; track $index) {
+                          <tr>
+                            <td class="ps-3 fw-semibold text-primary">{{ $index + 1 }}</td>
+                            <td>{{ member.firstNameNative }} {{ member.lastNameNative }}</td>
+                            <td>{{ member.birthDate }}</td>
+                            <td>{{calculateAge(member.birthDate)}}</td>
+                            <td>{{ member.passportNumber }}</td>
+                            <td>{{ member.phoneNumber }}</td>
+                            <td>
+                              @if (member.tripCancellationFlag) {
+                                <span class="badge bg-info me-1">Trip Cancel</span>
+                              }
+                              @if (member.winterSkiFlag) {
+                                <span class="badge bg-info me-1">Winter</span>
+                              }
+                              @if (member.covidFlag) {
+                                <span class="badge bg-info me-1">COVID-19</span>
+                              }
+                              @if (
+                                !member.tripCancellationFlag &&
+                                !member.winterSkiFlag &&
+                                !member.covidFlag
+                              ) {
+                                <span class="text-muted small">None</span>
+                              }
+                            </td>
+                            <td class="d-flex justify-content-center gap-1 flex-wrap">
+                              <button
+                                type="button"
+                                class="btn btn-outline-primary btn-sm"
+                                (click)="openEditMemberForm($index)"
+                                title="Edit"
+                              >
+                                <i class="bi bi-pencil"></i>
+                              </button>
+                              <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                (click)="deleteMember($index)"
+                                title="Delete"
+                              >
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Payment Section -->
+            <h5 class="mt-4 mb-3"><i class="bi bi-credit-card me-2"></i>Payment Information</h5>
+
+            <div class="row mb-3 g-3">
+              <div [hasRole]="[2]" class="col-4">
+                <app-form-text-input
+                  label="Payment Method"
+                  formControlName="paymentMethod"
+                  [options]="paymentMethods"
+                >
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  [hasRole]="[1]"
+                  label="Account Number"
+                  formControlName="paymentAccountNumber"
+                  [options]="[{ code: userCashAccount, label: userCashAccount }]"
+                  [disabled]="true"
+                >
+                </app-form-text-input>
+
+                <app-form-text-input
+                  [hasRole]="[2]"
+                  label="Account Number"
+                  formControlName="paymentAccountNumber"
+                  [disabled]="true"
+                >
+                </app-form-text-input>
+              </div>
+ @if (policyInfoForm.get('paymentMethod')?.value === '1') {
+              <div class="col-3 d-flex align-items-center pt-3" >
+                <button
+                  [hasRole]="[2]"
+                  (click)="goToAccountsTab()"
+                  class="btn btn-dark"
+                  type="button"
+                  [disabled]="loadingPremium()"
+                >
+                  Accounts
+                </button>
+              </div>
+}
+            </div>
+
+            <!-- Premium Display & Actions -->
+            <div class="d-flex align-items-start gap-2 flex-wrap">
+              <div
+                class="alert alert-primary d-flex flex-column align-items-center justify-content-center mb-0"
+                role="alert"
+                style="height: 118.8px; flex: 1 1 220px; min-width: 180px"
+              >
+                @if (loadingPremium()) {
+                  <app-logo-loading></app-logo-loading>
+                } @else {
+                  <h4>{{ premiumAmount() | number: '1.2-2' }}</h4>
+                  <label>Premium / U.S Dollar</label>
+                  <label>القسط / دولار امريكي</label>
+                }
+              </div>
+
+              <div style="flex: 0 1 250px; min-width: 210px">
+                @if (isRole2) {
+                  <label for="group-discount" class="form-label">Discount (%)</label>
+                  <input
+                    id="group-discount"
+                    type="number"
+                    class="form-control text-center"
+                    formControlName="manualDiscountPercent"
+                    min="0"
+                    max="100"
+                    step="0.1"
+                    aria-label="Manual discount percentage"
+                    placeholder="Automatic"
+                  />
+                  @if (
+                    policyInfoForm.get('manualDiscountPercent')?.invalid &&
+                    policyInfoForm.get('manualDiscountPercent')?.touched
+                  ) {
+                    <small class="text-danger">Enter a discount from 0% to 100%.</small>
+                  }
+                  <div class="d-flex gap-2 mt-2">
+                    <button
+                      type="button"
+                      class="btn btn-sm flex-fill"
+                      [class.btn-primary]="discountMode() === 'automatic'"
+                      [class.btn-outline-primary]="discountMode() !== 'automatic'"
+                      [disabled]="loadingPremium()"
+                      (click)="showPremium('automatic')"
+                    >
+                      Automatic ({{ automaticDiscountPercent() }}%)
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-sm flex-fill"
+                      [class.btn-primary]="discountMode() === 'manual'"
+                      [class.btn-outline-primary]="discountMode() !== 'manual'"
+                      [disabled]="!canRecalculateManualDiscount"
+                      (click)="showPremium('manual')"
+                    >
+                      Recalculate premium
+                    </button>
+                  </div>
+                  <small class="d-block text-center mt-1">
+                    Applied: {{ appliedDiscountPercent() }}%
+                  </small>
+                } @else {
+                  <label for="group-discount" class="form-label">Discount (%)</label>
+                  <input
+                    id="group-discount"
+                    type="text"
+                    class="form-control text-center"
+                    [value]="appliedDiscountPercent() + '%'"
+                    readonly
+                    aria-label="Applied discount percentage"
+                  />
+                }
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-outline-primary bi bi-caret-left-fill fs-6 pe-4 ms-auto"
+                style="min-width: 150px"
+                (click)="prevStep()"
+              >
+                Back
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-success bi bi-floppy2-fill fs-6"
+                style="min-width: 150px"
+                [disabled]="loadingPremium() || !premiumQuoteReady()"
+              >
+                {{ isUpdateMode ? 'Update Group Policy' : 'Save Group Policy' }}
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    </div>
+
+    <div class="col-lg-4 col-12">
+      <div class="alert alert-success" role="alert">
+        <strong>Calculate your premium in a single click..</strong><br />
+        Get instant results with our new calculator — no complicated forms or extra steps needed.<br /><br />
+        <a
+          (click)="this.appService.selectedTabIndex.set(7)"
+          class="btn btn-link m-0 p-0 text-primary fw-semibold"
+        >
+          Try it now →
+        </a>
+      </div>
+
+      <div class="card border-0">
+        <div class="card-body">
+          <app-files-download [data]="filesToDownload"></app-files-download>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (showMemberForm()) {
+  <app-group-member-form
+    [countries]="countries"
+    [memberData]="memberToEdit()"
+    [memberIndex]="editingMemberIndex()"
+    (onSave)="onMemberSave($event)"
+    (onCancel)="onMemberFormCancel()"
+  >
+  </app-group-member-form>
+}

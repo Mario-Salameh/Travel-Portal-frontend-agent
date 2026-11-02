@@ -1,0 +1,419 @@
+<div class="d-flex flex-column p-3 h-100">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="mb-1">Travel Prices Management</h2>
+      <small class="text-muted">Manage travel insurance pricing and rates</small>
+    </div>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-outline-primary" (click)="openFilterModal()">
+        <i class="bi bi-funnel me-2"></i>Filter
+      </button>
+      <button type="button" class="btn btn-success" (click)="openAddPriceModal()">
+        <i class="bi bi-plus-lg me-2"></i>Add New Price
+      </button>
+    </div>
+  </div>
+
+  <div class="card d-flex flex-column flex-grow-1 overflow-hidden">
+    <div class="card-header bg-transparent flex-shrink-0">
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-currency-dollar text-primary"></i>
+          Travel Prices List
+        </h6>
+        <div style="width: 250px">
+          <app-form-text-input
+            label="Search by Code"
+            [formControl]="searchControl"
+          ></app-form-text-input>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0 flex-grow-1 overflow-auto">
+      <table class="table table-hover table-sm mb-0" style="font-size: 0.8rem">
+        <thead class="table-light sticky-top">
+          <tr>
+            <th class="text-center" style="width: 50px">Select</th>
+            <th>Type</th>
+            <th>Area</th>
+            <th>Period</th>
+            <th class="text-center">From</th>
+            <th class="text-center">To</th>
+            <th>Code</th>
+            <th class="text-end">ReIns</th>
+            <th class="text-end">Prem</th>
+            <th class="text-end">Ret</th>
+            <th class="text-end">Comm</th>
+            <th class="text-end">Amm</th>
+            <th class="text-end">F1</th>
+            <th class="text-end">F2</th>
+            <th class="text-end">F3</th>
+            <th class="text-end">F4</th>
+            <th>Cd/Op</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (price of paginatedPrices; track $index) {
+            <tr [class.table-active]="isPriceSelected(price)">
+              <td class="text-center">
+                <div class="form-check d-flex justify-content-center m-0">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="selectedPrice"
+                    [checked]="isPriceSelected(price)"
+                    (change)="selectPrice(price)"
+                  />
+                </div>
+              </td>
+              <td>{{ getTypeName(price.planType) }}</td>
+              <td>{{ getAreaName(price.typeOfCoverage) }}</td>
+              <td class="text-nowrap">{{ getPeriodName(price.period) }}</td>
+              <td class="text-center">{{ price.ageFrom }}</td>
+              <td class="text-center">{{ price.ageTo }}</td>
+              <td class="font-monospace">{{ price.code }}</td>
+              <td class="text-end">{{ price.reInsurance }}</td>
+              <td class="text-end">{{ price.premium }}</td>
+              <td class="text-end">{{ price.retention }}</td>
+              <td class="text-end">{{ price.commission }}</td>
+              <td class="text-end">{{ price.amman }}</td>
+              <td class="text-end">{{ price.fees1 }}</td>
+              <td class="text-end">{{ price.fees2 }}</td>
+              <td class="text-end">{{ price.fees3 }}</td>
+              <td class="text-end">{{ price.fees4 }}</td>
+              <td class="font-monospace">{{ price.codeOp }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="17" class="text-center text-muted py-4">
+                <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                No prices available
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex gap-2 align-items-center px-3 py-2 border-top flex-shrink-0">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="openEditPriceModal()"
+        [disabled]="selectedPrice === null"
+      >
+        <i class="bi bi-pencil me-2"></i>Edit Price
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="deleteTravelPriceRecord()"
+        [disabled]="selectedPrice === null"
+      >
+        <i class="bi bi-trash me-2"></i>Delete Price
+      </button>
+
+      @if (filteredPrices().length > itemsPerPage) {
+        <small class="text-muted ms-auto">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
+          {{
+            currentPage * itemsPerPage > filteredPrices().length
+              ? filteredPrices().length
+              : currentPage * itemsPerPage
+          }}
+          of {{ filteredPrices().length }}
+        </small>
+
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <button class="page-link" (click)="previousPage()" [disabled]="currentPage === 1">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+            </li>
+
+            @for (page of pageNumbers; track page) {
+              <li class="page-item" [class.active]="currentPage === page">
+                <button class="page-link" (click)="goToPage(page)">
+                  {{ page }}
+                </button>
+              </li>
+            }
+
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <button
+                class="page-link"
+                (click)="nextPage()"
+                [disabled]="currentPage === totalPages"
+              >
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Filter Modal -->
+@if (showFilterModal) {
+  <div
+    class="modal d-block"
+    tabindex="-1"
+    style="background-color: rgba(0, 0, 0, 0.5)"
+    (click)="closeFilterModal()"
+  >
+    <div class="modal-dialog modal-dialog-centered" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header bg-primary bg-opacity-10">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-funnel fs-4 text-primary"></i>
+            <h5 class="modal-title mb-0">Filter Prices</h5>
+          </div>
+          <button type="button" class="btn-close" (click)="closeFilterModal()"></button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="filterForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Type of Travel</label>
+                <select class="form-select" formControlName="planType">
+                  <option [ngValue]="null">All Types</option>
+                  @for (option of travelTypeOptions; track option.value) {
+                    <option [ngValue]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Area of Coverage</label>
+                <select class="form-select" formControlName="typeOfCoverage">
+                  <option [ngValue]="null">All Areas</option>
+                  @for (option of areaOptions; track option.value) {
+                    <option [ngValue]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-12">
+                <label class="form-label">Period</label>
+                <select class="form-select" formControlName="period">
+                  <option [ngValue]="null">All Periods</option>
+                  @for (option of periodOptions; track option.value) {
+                    <option [ngValue]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-6">
+                <app-form-text-input
+                  label="Age From"
+                  inputType="number"
+                  formControlName="ageFrom"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-6">
+                <app-form-text-input
+                  label="Age To"
+                  inputType="number"
+                  formControlName="ageTo"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="clearFilters()">
+            <i class="bi bi-x-lg me-1"></i>Clear Filters
+          </button>
+          <button type="button" class="btn btn-primary" (click)="applyFilters()">
+            <i class="bi bi-check-lg me-1"></i>Apply Filters
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Price Form Modal -->
+@if (showPriceModal) {
+  <div
+    class="modal d-block"
+    tabindex="-1"
+    style="background-color: rgba(0, 0, 0, 0.5)"
+    (click)="closePriceModal()"
+  >
+    <div
+      class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="modal-content">
+        <div class="modal-header bg-primary bg-opacity-10">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-currency-dollar fs-4 text-primary"></i>
+            <h5 class="modal-title mb-0">
+              {{ isEditMode ? 'Edit Price' : 'Add New Price' }}
+            </h5>
+          </div>
+          <button type="button" class="btn-close" (click)="closePriceModal()"></button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="priceForm">
+            <!-- Basic Information -->
+            <h6 class="text-primary fw-semibold mb-3">
+              <i class="bi bi-info-circle me-2"></i>Basic Information
+            </h6>
+            <div class="row g-3 mb-4">
+              <div class="col-md-4">
+                <label class="form-label">Type of Travel <span class="text-danger">*</span></label>
+                <select class="form-select" formControlName="planType">
+                  <option [ngValue]="null">Select type</option>
+                  @for (option of travelTypeOptions; track option.value) {
+                    <option [ngValue]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label"
+                  >Area of Coverage <span class="text-danger">*</span></label
+                >
+                <select class="form-select" formControlName="typeOfCoverage">
+                  <option [ngValue]="null">Select area</option>
+                  @for (option of areaOptions; track option.value) {
+                    <option [ngValue]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Period <span class="text-danger">*</span></label>
+                <select class="form-select" formControlName="period">
+                  <option [ngValue]="null">Select period</option>
+                  @for (option of periodOptions; track option.value) {
+                    <option [ngValue]="option.value">{{ option.label }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-3">
+                <app-form-text-input
+                  label="Age From"
+                  inputType="number"
+                  formControlName="ageFrom"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-3">
+                <app-form-text-input
+                  label="Age To"
+                  inputType="number"
+                  formControlName="ageTo"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-3">
+                <app-form-text-input
+                  label="Code"
+                  inputType="number"
+                  formControlName="code"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-3">
+                <app-form-text-input
+                  label="Code/Op"
+                  inputType="number"
+                  formControlName="codeOp"
+                ></app-form-text-input>
+              </div>
+            </div>
+
+            <!-- Primary Pricing -->
+            <h6 class="text-primary fw-semibold mb-3">
+              <i class="bi bi-cash-stack me-2"></i>Primary Pricing
+            </h6>
+            <div class="row g-3 mb-4">
+              <div class="col-md-2">
+                <app-form-text-input
+                  label="ReInsurance"
+                  inputType="number"
+                  formControlName="reInsurance"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-2">
+                <app-form-text-input
+                  label="Premium"
+                  inputType="number"
+                  formControlName="premium"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-2">
+                <app-form-text-input
+                  label="Retention"
+                  inputType="number"
+                  formControlName="retention"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-2">
+                <app-form-text-input
+                  label="Commission"
+                  inputType="number"
+                  formControlName="commission"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-2">
+                <app-form-text-input
+                  label="Amman"
+                  inputType="number"
+                  formControlName="amman"
+                ></app-form-text-input>
+              </div>
+            </div>
+
+            <!-- Fees -->
+            <h6 class="text-primary fw-semibold mb-3"><i class="bi bi-receipt me-2"></i>Fees</h6>
+            <div class="row g-3">
+              <div class="col-md-3">
+                <app-form-text-input
+                  label="Fees 1"
+                  inputType="number"
+                  formControlName="fees1"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-3">
+                <app-form-text-input
+                  label="Fees 2"
+                  inputType="number"
+                  formControlName="fees2"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-3">
+                <app-form-text-input
+                  label="Fees 3"
+                  inputType="number"
+                  formControlName="fees3"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-3">
+                <app-form-text-input
+                  label="Fees 4"
+                  inputType="number"
+                  formControlName="fees4"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closePriceModal()">
+            <i class="bi bi-x-lg me-1"></i>Cancel
+          </button>
+          <button type="button" class="btn btn-primary" (click)="savePrice()">
+            <i class="bi bi-check-lg me-1"></i>
+            {{ isEditMode ? 'Update Price' : 'Save Price' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

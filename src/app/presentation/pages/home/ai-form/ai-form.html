@@ -1,0 +1,114 @@
+<div class="h-100 d-flex flex-column">
+
+  @if (!isLoaded()) {
+    <app-modern-trust-loading
+      class="flex-grow-1"
+      style="display: block;"
+      accentText="AI"
+      [loadingFunc]="loadingFn"
+      [loadedFunc]="loadedFn"
+    ></app-modern-trust-loading>
+  } @else {
+
+    <div class="ai-chat d-flex flex-column h-100">
+
+      <!-- ── Header ─────────────────────────────────────────────────────────── -->
+      <div class="ai-header flex-shrink-0">
+        <div class="ai-header-name"><i class="bi bi-stars me-2"></i>Trust AI</div>
+        <div class="ai-header-sub">Powered by Trust Holding</div>
+      </div>
+
+      <!-- ── Messages ───────────────────────────────────────────────────────── -->
+      <div class="ai-messages flex-grow-1 overflow-auto">
+
+        @if (messages.length === 0) {
+          <div class="ai-welcome">
+            <div class="ai-welcome-icon">
+              <i class="bi bi-stars"></i>
+            </div>
+            <h5 class="fw-bold mb-2">How can I help you today?</h5>
+            <p class="ai-welcome-sub">Ask me anything or attach a file to get started.</p>
+          </div>
+        }
+
+        @for (msg of messages; track $index) {
+          <div class="msg-row" [class.msg-row-user]="msg.role === 'user'">
+
+            @if (msg.role === 'ai') {
+              <div class="msg-avatar flex-shrink-0">
+                <i class="bi bi-stars"></i>
+              </div>
+            }
+
+            <div class="msg-bubble" [class.msg-bubble-user]="msg.role === 'user'" [class.msg-bubble-ai]="msg.role === 'ai'">
+
+              @if (msg.fileNames.length > 0) {
+                <div class="msg-files">
+                  @for (f of msg.fileNames; track f) {
+                    <span class="msg-file-chip">
+                      <i class="bi bi-paperclip"></i>{{ f }}
+                    </span>
+                  }
+                </div>
+              }
+
+              @if (msg.text || msg.isTyping) {
+                <span [class.typing-cursor]="msg.isTyping">{{ msg.text }}</span>
+              }
+
+            </div>
+          </div>
+        }
+
+        <div #messagesEnd></div>
+      </div>
+
+      <!-- ── Input Area ─────────────────────────────────────────────────────── -->
+      <div class="ai-input-area flex-shrink-0">
+
+        @if (attachedFiles.length > 0) {
+          <div class="ai-file-preview">
+            @for (f of attachedFiles; track $index; let i = $index) {
+              <div class="file-chip">
+                <i class="bi bi-file-earmark-text"></i>
+                <span class="file-chip-name">{{ f.name }}</span>
+                <button class="file-chip-remove" (click)="removeFile(i)">
+                  <i class="bi bi-x"></i>
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        <div class="ai-input-row">
+          <input type="file" multiple #fileInput class="d-none" (change)="onFilesSelected($event)">
+          <button class="ai-icon-btn" (click)="openFilePicker()" title="Attach files">
+            <i class="bi bi-paperclip"></i>
+          </button>
+          <textarea
+            #msgInput
+            class="ai-textarea"
+            placeholder="Message Trust AI…"
+            rows="1"
+            [(ngModel)]="inputText"
+            (keydown)="onKeyDown($event)"
+            (input)="autoResize(msgInput)"
+          ></textarea>
+          <button
+            class="ai-send-btn"
+            [class.ai-send-ready]="inputText.trim() || attachedFiles.length > 0"
+            [disabled]="isAiTyping"
+            (click)="send()"
+            title="Send"
+          >
+            <i class="bi bi-arrow-up"></i>
+          </button>
+        </div>
+
+        <p class="ai-disclaimer">Trust AI can make mistakes. Verify important information.</p>
+      </div>
+
+    </div>
+  }
+
+</div>

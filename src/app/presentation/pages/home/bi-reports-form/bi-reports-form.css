@@ -1,0 +1,12 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.chart-card {
+  transition: box-shadow 0.2s ease;
+}
+
+.chart-card:hover {
+  box-shadow: 0 0.4rem 1.2rem rgba(192, 57, 10, 0.1) !important;
+}

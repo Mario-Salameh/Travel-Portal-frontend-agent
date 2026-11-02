@@ -1,0 +1,463 @@
+<div class="container py-3 d-flex flex-column">
+  <!-- ===== HOME VIEW ===== -->
+  @if (activeView() === 'home') {
+    <!-- Banner -->
+    <div
+      class="card border-0 mb-4"
+      style="background: linear-gradient(135deg, #1a6b3c 0%, #0f4025 100%)"
+    >
+      <div class="card-body py-4 px-4">
+        <div class="d-flex align-items-center">
+          <div class="bg-white bg-opacity-25 rounded-3 p-3 me-3">
+            <i class="bi bi-question-circle-fill text-white fs-3"></i>
+          </div>
+          <div class="text-white">
+            <h4 class="fw-bold mb-1">Help Center</h4>
+            <p class="mb-0 opacity-75">
+              Find answers, guides, and step-by-step instructions for every feature
+            </p>
+          </div>
+          <div class="ms-auto text-white d-none d-md-block">
+            <i class="bi bi-book-half" style="font-size: 3rem; opacity: 0.15"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="input-group mb-3">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="bi bi-search text-muted"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control border-start-0"
+        placeholder="Search help topics, guides, FAQs..."
+        [value]="searchQuery()"
+        (input)="onSearchInput($event)"
+      />
+      @if (searchQuery()) {
+        <button class="btn btn-outline-secondary" (click)="clearSearch()">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      }
+    </div>
+
+    @if (searchQuery()) {
+      <p class="text-muted small mb-3">
+        <i class="bi bi-funnel me-1"></i>
+        Found <strong>{{ filteredCategories().length }}</strong> matching
+        {{ filteredCategories().length === 1 ? 'topic' : 'topics' }}
+      </p>
+    }
+
+    <div class="pb-2">
+      <!-- Topic Cards -->
+      <h6 class="text-muted fw-semibold small text-uppercase mb-2">
+        <i class="bi bi-grid-fill me-1"></i>{{ searchQuery() ? 'Search Results' : 'Help Topics' }}
+      </h6>
+
+      @if (filteredCategories().length === 0) {
+        <div class="text-center text-muted py-5">
+          <i class="bi bi-search d-block mb-2" style="font-size: 2rem; opacity: 0.3"></i>
+          <p class="mb-1">
+            No results found for "<strong>{{ searchQuery() }}</strong
+            >"
+          </p>
+          <small>Try different keywords or browse all topics</small>
+          <div class="mt-2">
+            <button class="btn btn-sm btn-outline-secondary" (click)="clearSearch()">
+              Clear Search
+            </button>
+          </div>
+        </div>
+      }
+
+      <div class="row g-3">
+        @for (cat of filteredCategories(); track cat.id) {
+          <div class="col-xl-4 col-lg-6" [hasRole]="cat.roles">
+            <div
+              class="card border shadow-sm h-100"
+              style="cursor: pointer"
+              (click)="openCategory(cat)"
+            >
+              <div class="card-body">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                  <div
+                    class="rounded-3 d-flex align-items-center justify-content-center text-white flex-shrink-0"
+                    style="width: 42px; height: 42px; background: #1a6b3c"
+                  >
+                    <i class="bi" [ngClass]="cat.icon"></i>
+                  </div>
+                  <div class="flex-grow-1 min-w-0">
+                    <h6 class="fw-bold mb-0 small">{{ cat.title }}</h6>
+                    <small class="text-muted">{{ cat.subtitle }}</small>
+                  </div>
+                  <i class="bi bi-chevron-right text-muted small"></i>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                  @if (cat.steps) {
+                    <span class="badge bg-light text-dark border" style="font-size: 0.7rem">
+                      <i class="bi bi-list-ol me-1"></i>{{ cat.steps.length }} steps
+                    </span>
+                  }
+                  @if (cat.faqs) {
+                    <span class="badge bg-light text-dark border" style="font-size: 0.7rem">
+                      <i class="bi bi-chat-dots me-1"></i>{{ cat.faqs.length }} FAQs
+                    </span>
+                  }
+                  @if (cat.tips) {
+                    <span class="badge bg-light text-dark border" style="font-size: 0.7rem">
+                      <i class="bi bi-lightbulb me-1"></i>{{ cat.tips.length }} tips
+                    </span>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- ===== CATEGORY DETAIL VIEW ===== -->
+  @if (activeView() === 'category' && selectedCategory()) {
+    <!-- Detail Banner -->
+    <div
+      class="card border-0 mb-3"
+      style="background: linear-gradient(135deg, #1a6b3c 0%, #0f4025 100%)"
+    >
+      <div class="card-body py-4 px-4">
+        <div class="d-flex align-items-center">
+          <div class="bg-white bg-opacity-25 rounded-3 p-3 me-3">
+            <i class="bi text-white fs-3" [ngClass]="selectedCategory()!.icon"></i>
+          </div>
+          <div class="text-white">
+            <h4 class="fw-bold mb-1">{{ selectedCategory()!.title }}</h4>
+            <p class="mb-0 opacity-75">{{ selectedCategory()!.subtitle }}</p>
+          </div>
+
+          <button
+            class="btn btn-sm ms-auto me-3 text-white d-flex align-items-center gap-1 align-self-start"
+            style="
+              background: rgba(255, 255, 255, 0.18);
+              border: 1px solid rgba(255, 255, 255, 0.25);
+            "
+            (click)="goBack()"
+          >
+            <i class="bi bi-arrow-left"></i> Back
+          </button>
+          @if (selectedCategory()!.tabIndex !== null) {
+            <button
+              class="btn btn-sm text-white d-flex align-items-center gap-1 align-self-start"
+              style="
+                background: rgba(255, 255, 255, 0.18);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+              "
+              (click)="navigateTo(selectedCategory()!.tabIndex!)"
+            >
+              <i class="bi bi-box-arrow-up-right"></i> Open This Section
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Tabs -->
+    <ul class="nav nav-pills gap-2 mb-3 flex-shrink-0">
+      <li class="nav-item">
+        <button
+          class="nav-link d-flex align-items-center gap-1 border"
+          [class.active]="activeContentTab() === 'overview'"
+          [class.text-white]="activeContentTab() === 'overview'"
+          [style.background]="activeContentTab() === 'overview' ? '#1a6b3c' : ''"
+          (click)="setContentTab('overview')"
+        >
+          <i class="bi bi-file-text"></i> Overview
+        </button>
+      </li>
+      @if (selectedCategory()!.steps) {
+        <li class="nav-item">
+          <button
+            class="nav-link d-flex align-items-center gap-1 border"
+            [class.active]="activeContentTab() === 'steps'"
+            [class.text-white]="activeContentTab() === 'steps'"
+            [style.background]="activeContentTab() === 'steps' ? '#1a6b3c' : ''"
+            (click)="setContentTab('steps')"
+          >
+            <i class="bi bi-list-check"></i> Step-by-Step
+          </button>
+        </li>
+      }
+      @if (selectedCategory()!.fields) {
+        <li class="nav-item">
+          <button
+            class="nav-link d-flex align-items-center gap-1 border"
+            [class.active]="activeContentTab() === 'fields'"
+            [class.text-white]="activeContentTab() === 'fields'"
+            [style.background]="activeContentTab() === 'fields' ? '#1a6b3c' : ''"
+            (click)="setContentTab('fields')"
+          >
+            <i class="bi bi-input-cursor-text"></i> Fields Guide
+          </button>
+        </li>
+      }
+      @if (selectedCategory()!.tips) {
+        <li class="nav-item">
+          <button
+            class="nav-link d-flex align-items-center gap-1 border"
+            [class.active]="activeContentTab() === 'tips'"
+            [class.text-white]="activeContentTab() === 'tips'"
+            [style.background]="activeContentTab() === 'tips' ? '#1a6b3c' : ''"
+            (click)="setContentTab('tips')"
+          >
+            <i class="bi bi-lightbulb"></i> Tips
+          </button>
+        </li>
+      }
+      @if (selectedCategory()!.faqs) {
+        <li class="nav-item">
+          <button
+            class="nav-link d-flex align-items-center gap-1 border"
+            [class.active]="activeContentTab() === 'faq'"
+            [class.text-white]="activeContentTab() === 'faq'"
+            [style.background]="activeContentTab() === 'faq' ? '#1a6b3c' : ''"
+            (click)="setContentTab('faq')"
+          >
+            <i class="bi bi-chat-dots"></i> FAQ
+          </button>
+        </li>
+      }
+    </ul>
+
+    <!-- Content Area -->
+    <div class="pb-2">
+      <!-- Overview -->
+      @if (activeContentTab() === 'overview') {
+        <div class="alert alert-light border d-flex gap-3 align-items-start mb-3">
+          <i class="bi bi-info-circle fs-5" style="color: #1a6b3c"></i>
+          <p class="mb-0" style="line-height: 1.65">{{ selectedCategory()!.overview }}</p>
+        </div>
+
+        @if (selectedCategory()!.steps) {
+          <div class="card border mb-3">
+            <div class="card-header bg-white">
+              <h6 class="fw-semibold mb-0">
+                <i class="bi bi-signpost-split me-2"></i>What you'll learn
+              </h6>
+            </div>
+            <div class="card-body py-2">
+              @for (step of selectedCategory()!.steps; track step.title; let i = $index) {
+                <div class="d-flex align-items-center gap-2 py-2">
+                  <span
+                    class="badge rounded-circle text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                    style="width: 24px; height: 24px; font-size: 0.7rem; background: #1a6b3c"
+                    >{{ i + 1 }}</span
+                  >
+                  <span class="small">{{ step.title }}</span>
+                </div>
+              }
+              <div class="pt-1 pb-2">
+                <button
+                  class="btn btn-sm btn-link p-0 text-decoration-none"
+                  style="color: #1a6b3c"
+                  (click)="setContentTab('steps')"
+                >
+                  View full step-by-step guide <i class="bi bi-arrow-right ms-1"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Stats row -->
+        <div class="row g-2">
+          @if (selectedCategory()!.steps) {
+            <div class="col">
+              <div
+                class="card border text-center py-3"
+                style="cursor: pointer"
+                (click)="setContentTab('steps')"
+              >
+                <div class="fw-bold" style="font-size: 1.2rem">
+                  {{ selectedCategory()!.steps!.length }}
+                </div>
+                <small class="text-muted">Steps</small>
+              </div>
+            </div>
+          }
+          @if (selectedCategory()!.fields) {
+            <div class="col">
+              <div
+                class="card border text-center py-3"
+                style="cursor: pointer"
+                (click)="setContentTab('fields')"
+              >
+                <div class="fw-bold" style="font-size: 1.2rem">
+                  {{ selectedCategory()!.fields!.length }}
+                </div>
+                <small class="text-muted">Fields</small>
+              </div>
+            </div>
+          }
+          @if (selectedCategory()!.tips) {
+            <div class="col">
+              <div
+                class="card border text-center py-3"
+                style="cursor: pointer"
+                (click)="setContentTab('tips')"
+              >
+                <div class="fw-bold" style="font-size: 1.2rem">
+                  {{ selectedCategory()!.tips!.length }}
+                </div>
+                <small class="text-muted">Tips</small>
+              </div>
+            </div>
+          }
+          @if (selectedCategory()!.faqs) {
+            <div class="col">
+              <div
+                class="card border text-center py-3"
+                style="cursor: pointer"
+                (click)="setContentTab('faq')"
+              >
+                <div class="fw-bold" style="font-size: 1.2rem">
+                  {{ selectedCategory()!.faqs!.length }}
+                </div>
+                <small class="text-muted">FAQs</small>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Steps -->
+      @if (activeContentTab() === 'steps' && selectedCategory()!.steps) {
+        @for (
+          step of selectedCategory()!.steps;
+          track step.title;
+          let i = $index;
+          let last = $last
+        ) {
+          <div class="d-flex gap-3 mb-0">
+            <div class="d-flex flex-column align-items-center" style="width: 36px">
+              <div
+                class="rounded-circle text-white d-flex align-items-center justify-content-center flex-shrink-0 fw-bold"
+                style="width: 36px; height: 36px; font-size: 0.82rem; background: #1a6b3c"
+              >
+                {{ i + 1 }}
+              </div>
+              @if (!last) {
+                <div
+                  class="flex-grow-1"
+                  style="width: 2px; min-height: 20px; background: #1a6b3c30"
+                ></div>
+              }
+            </div>
+            <div class="pb-4 flex-grow-1">
+              <h6 class="fw-semibold mb-1">{{ step.title }}</h6>
+              <p class="text-muted small mb-0" style="line-height: 1.6">{{ step.description }}</p>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Fields Guide -->
+      @if (activeContentTab() === 'fields' && selectedCategory()!.fields) {
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-3">
+            <thead class="table-light">
+              <tr>
+                <th class="small fw-semibold text-uppercase" style="font-size: 0.75rem">
+                  Field Name
+                </th>
+                <th class="small fw-semibold text-uppercase" style="font-size: 0.75rem">
+                  Description
+                </th>
+                <th class="small fw-semibold text-uppercase" style="font-size: 0.75rem">
+                  Required
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (field of selectedCategory()!.fields; track field.name) {
+                <tr>
+                  <td>
+                    <strong class="small">{{ field.name }}</strong>
+                  </td>
+                  <td class="small text-muted">{{ field.description }}</td>
+                  <td>
+                    @if (field.required) {
+                      <span
+                        class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle"
+                        >Required</span
+                      >
+                    } @else {
+                      <span class="badge bg-info bg-opacity-10 text-info border border-info-subtle"
+                        >Optional</span
+                      >
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="text-muted small">
+          <i class="bi bi-info-circle me-1"></i>
+          Fields marked as
+          <span
+            class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle"
+            style="font-size: 0.7rem"
+            >Required</span
+          >
+          must be filled before saving.
+          <span
+            class="badge bg-info bg-opacity-10 text-info border border-info-subtle"
+            style="font-size: 0.7rem"
+            >Optional</span
+          >
+          fields can be left empty.
+        </p>
+      }
+
+      <!-- Tips -->
+      @if (activeContentTab() === 'tips' && selectedCategory()!.tips) {
+        @for (tip of selectedCategory()!.tips; track tip) {
+          <div class="card border mb-2">
+            <div class="card-body py-3 d-flex gap-3 align-items-start">
+              <i class="bi bi-lightbulb-fill" style="color: #1a6b3c"></i>
+              <p class="mb-0 small" style="line-height: 1.55">{{ tip }}</p>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- FAQ -->
+      @if (activeContentTab() === 'faq' && selectedCategory()!.faqs) {
+        <div class="accordion" id="helpFaqAccordion">
+          @for (faq of selectedCategory()!.faqs; track faq.question; let i = $index) {
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button small fw-medium"
+                  [class.collapsed]="expandedFaq() !== selectedCategory()!.id + '-' + i"
+                  type="button"
+                  (click)="toggleFaq(selectedCategory()!.id + '-' + i)"
+                >
+                  <i class="bi bi-question-circle me-2" style="color: #1a6b3c"></i>
+                  {{ faq.question }}
+                </button>
+              </h2>
+              @if (expandedFaq() === selectedCategory()!.id + '-' + i) {
+                <div class="accordion-body small text-muted" style="line-height: 1.65">
+                  {{ faq.answer }}
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

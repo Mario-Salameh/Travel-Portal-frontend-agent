@@ -1,0 +1,72 @@
+<div class="container p-3">
+  <div class="row">
+    <div class="d-flex flex-column pe-3 col-md-7">
+      <div class="mb-4">
+        <h2 class="mb-1">Export Travel Data</h2>
+        <small class="text-muted">Export travel insurance data for a specified date range</small>
+      </div>
+
+      <form [formGroup]="exportForm" (ngSubmit)="onExport()" class="d-flex flex-column gap-4">
+        <div>
+          <h6 class="text-secondary fw-semibold mb-2">Date Range Parameters</h6>
+          <hr class="mt-0 mb-3" />
+          <div class="row g-3">
+            <div class="col-md-6">
+              <app-form-text-input
+                inputType="date"
+                label="From Date"
+                formControlName="fromDate"
+              ></app-form-text-input>
+            </div>
+            <div class="col-md-6">
+              <app-form-text-input
+                inputType="date"
+                label="To Date"
+                formControlName="toDate"
+              ></app-form-text-input>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-success px-5">
+          <i class="bi bi-download me-2"></i>Export Data
+        </button>
+      </form>
+    </div>
+
+    <div class="col-md-5">
+      <div class="alert alert-info mb-3">
+        <h6 class="alert-heading fw-bold mb-2">
+          <i class="bi bi-lightbulb-fill me-2"></i>Export Guide
+        </h6>
+        <hr class="my-2" />
+        <p class="mb-2 small">Instructions for exporting travel data:</p>
+        <ul class="small mb-0">
+          <li class="mb-1">
+            Select the <strong>From Date</strong> to specify the start of the export period
+          </li>
+          <li class="mb-1">
+            Select the <strong>To Date</strong> to specify the end of the export period
+          </li>
+          <li class="mb-1">
+            The exported data will include all travel insurance records within the selected date
+            range
+          </li>
+          <li class="mb-1">
+            Data will be exported in <strong>CSV</strong> format so that it can be easily analyzed
+            and processed
+          </li>
+        </ul>
+      </div>
+
+      <div class="alert alert-warning mb-0">
+        <h6 class="alert-heading fw-bold mb-2"><i class="bi bi-info-circle-fill me-2"></i>Note</h6>
+        <hr class="my-2" />
+        <p class="small mb-0">
+          Large date ranges may take longer to process. For optimal performance, consider exporting
+          data in smaller increments.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,531 @@
+{
+  "categories": [
+    {
+      "id": "getting-started",
+      "title": "Getting Started",
+      "subtitle": "Login, navigation & first steps",
+      "icon": "bi-rocket-takeoff-fill",
+      "tabIndex": null,
+      "overview": "Welcome to the Service Nexus Agent Portal. This system helps you manage travel insurance policies efficiently. After logging in with your credentials, you will see the main dashboard with a sidebar menu on the left and the workspace on the right.",
+      "steps": [
+        {
+          "title": "Log In",
+          "description": "Enter your username and password on the login screen and click \"Sign In\". If your account is locked after 6 failed attempts, contact your administrator."
+        },
+        {
+          "title": "Navigate the Dashboard",
+          "description": "Use the sidebar on the left to switch between modules. The active tab is highlighted in orange. Click any tab to open that section."
+        },
+        {
+          "title": "Understand Your Role",
+          "description": "Your access level determines what you can see and do. Normal users create policies for their office. Admins have full system access. Query users have read-only access."
+        },
+        {
+          "title": "Session & Security",
+          "description": "Your session expires after 60 minutes of inactivity. You will need to log in again. Always use the Logout button when you are done."
+        }
+      ],
+      "tips": [
+        "Your office name and username are always shown at the bottom-left of the sidebar.",
+        "If a tab shows a beige background, it means you have unsaved data in that tab. Click the red arrow button to discard and return.",
+        "The system supports both English and Arabic for names and addresses.",
+        "Policy wording documents (PDFs) are available for download on policy creation forms."
+      ],
+      "faqs": [
+        {
+          "question": "What do I do if my account is locked?",
+          "answer": "Contact your system administrator. They can unlock your account from the Users management section. Accounts lock after 6 consecutive failed login attempts."
+        },
+        {
+          "question": "Can I work on multiple policies at the same time?",
+          "answer": "Yes. Each policy tab (Individual, Inbound, Student, Group) maintains its own data independently. You can switch between tabs without losing your progress."
+        },
+        {
+          "question": "How do I change my password?",
+          "answer": "Password changes are managed by your administrator. If the system requires a password change, you will be prompted upon login."
+        }
+      ]
+    },
+    {
+      "id": "individual-policy",
+      "title": "Individual Travel Policy",
+      "subtitle": "Create single-traveler policies",
+      "icon": "bi-person-fill",
+      "tabIndex": 0,
+      "overview": "Create travel insurance policies for individual travelers. The form has two steps: personal information and policy details. The premium is calculated automatically as you fill in the details.",
+      "steps": [
+        {
+          "title": "Open Individual Travel",
+          "description": "Click \"Individual Travel\" in the sidebar. A two-step form will appear with a progress indicator at the top."
+        },
+        {
+          "title": "Fill Personal Information (Step 1)",
+          "description": "Enter the traveler's name (English and optionally Arabic), phone number (exactly 10 digits), gender, passport ID, date of birth, and nationality. Fields marked with a red asterisk (*) are required."
+        },
+        {
+          "title": "Fill Policy Details (Step 2)",
+          "description": "Click \"Next\" to proceed. Select the destination country, inception date, and coverage period. The expiry date calculates automatically. Choose any add-ons: Trip Cancellation ($5,000 limit), Winter Sports, or COVID-19 (up to €30,000)."
+        },
+        {
+          "title": "Review Premium",
+          "description": "The premium appears on the right side in U.S. Dollars. It updates automatically when you change the period, date of birth, destination, or toggle add-ons."
+        },
+        {
+          "title": "Select Payment",
+          "description": "Choose a payment method (Cash or On Account). If using On Account, click the \"Accounts\" button to select the billing account."
+        },
+        {
+          "title": "Save the Policy",
+          "description": "Click the green \"Save Policy\" button. On success, you will see a confirmation and be redirected to the policy details view."
+        }
+      ],
+      "fields": [
+        {
+          "name": "First Name",
+          "description": "Traveler's first name in English (max 15 characters)",
+          "required": true
+        },
+        {
+          "name": "Family Name",
+          "description": "Traveler's last/family name in English",
+          "required": true
+        },
+        {
+          "name": "Father Name",
+          "description": "Traveler's father's name",
+          "required": false
+        },
+        {
+          "name": "Phone Number",
+          "description": "Must be exactly 10 digits",
+          "required": true
+        },
+        {
+          "name": "Passport ID",
+          "description": "Travel document number",
+          "required": true
+        },
+        {
+          "name": "Date of Birth",
+          "description": "Used for age-based premium calculation",
+          "required": true
+        },
+        {
+          "name": "Gender",
+          "description": "Male or Female",
+          "required": true
+        },
+        {
+          "name": "Nationality",
+          "description": "Select from countries list",
+          "required": true
+        },
+        {
+          "name": "Destination",
+          "description": "Travel destination country — determines coverage zone",
+          "required": true
+        },
+        {
+          "name": "Inception Date",
+          "description": "Policy start date",
+          "required": true
+        },
+        {
+          "name": "Period",
+          "description": "Coverage duration in days",
+          "required": true
+        },
+        {
+          "name": "Payment Method",
+          "description": "Cash or On Account",
+          "required": true
+        }
+      ],
+      "tips": [
+        "The premium recalculates instantly when you change period, date of birth, add-ons, or destination.",
+        "Expiry date is always auto-calculated — you cannot edit it manually.",
+        "Phone numbers must be exactly 10 digits or the form will not submit.",
+        "Arabic name fields are optional but recommended for bilingual documentation.",
+        "Download the policy wording PDF from the right panel to share coverage details with your client."
+      ],
+      "faqs": [
+        {
+          "question": "Why is the Departure field disabled?",
+          "answer": "For standard Individual plans, the departure is fixed to Palestine (PAL). For Inbound plans, the destination is fixed instead."
+        },
+        {
+          "question": "How is the premium calculated?",
+          "answer": "The premium depends on: traveler's age (from date of birth), coverage period, destination zone, plan type, and any selected add-ons (COVID, Trip Cancellation, Winter Sports)."
+        },
+        {
+          "question": "Can I edit a policy after saving?",
+          "answer": "Saved policies in Draft status can be modified. Once a policy is paid/printed, changes require an endorsement."
+        },
+        {
+          "question": "What is an endorsement?",
+          "answer": "An endorsement creates a modified copy of an existing policy with a \"C\" suffix appended to the reference number. The original policy remains unchanged."
+        }
+      ]
+    },
+    {
+      "id": "inbound-policy",
+      "title": "Inbound / Individual",
+      "subtitle": "Policies for incoming travelers",
+      "icon": "bi-arrow-down-right-circle-fill",
+      "tabIndex": 1,
+      "overview": "The Inbound plan is for travelers coming into Palestine. It uses the same two-step form as Individual Travel, but with reversed origin/destination logic — the destination is pre-set to Palestine and you select the departure country instead.",
+      "steps": [
+        {
+          "title": "Open Inbound/Individual",
+          "description": "Click \"InBound/Individual\" in the sidebar."
+        },
+        {
+          "title": "Fill Personal Information",
+          "description": "Same as Individual Travel — enter traveler details, passport, phone, and nationality."
+        },
+        {
+          "title": "Fill Policy Details",
+          "description": "The departure country is now selectable (where the traveler is coming from). Destination shows \"PAL\" and is locked. Select inception date, period, and add-ons."
+        },
+        {
+          "title": "Save",
+          "description": "Review the premium and click \"Save Policy\"."
+        }
+      ],
+      "tips": [
+        "Inbound policies have separate policy wording documents — make sure to download the Inbound version.",
+        "The coverage zone is determined by the departure country for inbound plans."
+      ],
+      "faqs": [
+        {
+          "question": "What is the difference between Individual and Inbound?",
+          "answer": "Individual is for travelers leaving Palestine. Inbound is for travelers arriving in Palestine. The origin/destination fields are swapped accordingly."
+        }
+      ]
+    },
+    {
+      "id": "student-plan",
+      "title": "Student Plan",
+      "subtitle": "Insurance for student travelers",
+      "icon": "bi-backpack-fill",
+      "tabIndex": 2,
+      "overview": "The Student Plan provides specialized travel insurance for students studying abroad. It uses Plan Type 11 with student-specific coverage zones and pricing. The form follows the same two-step process as Individual Travel.",
+      "steps": [
+        {
+          "title": "Open Student Plan",
+          "description": "Click \"Student Plan\" in the sidebar."
+        },
+        {
+          "title": "Enter Student Details",
+          "description": "Fill in the student's personal information just like an Individual policy."
+        },
+        {
+          "title": "Configure Coverage",
+          "description": "Select destination, inception date, and period. Student plans may have different available periods and pricing."
+        },
+        {
+          "title": "Save",
+          "description": "Review the premium and save the policy."
+        }
+      ],
+      "tips": [
+        "Student plans use different coverage zones (Zone 11 and Zone 12) with pricing tailored for students.",
+        "The available periods may differ from standard Individual plans.",
+        "Student policy wording documents contain student-specific terms."
+      ]
+    },
+    {
+      "id": "group-policy",
+      "title": "Group Travel",
+      "subtitle": "Manage company & group policies",
+      "icon": "bi-people-fill",
+      "tabIndex": 3,
+      "overview": "Group Travel policies cover multiple travelers under one company/organization. You first enter the company and trip details, then add individual group members. Each member can have different add-ons, and the premium is calculated for the entire group.",
+      "steps": [
+        {
+          "title": "Open Group Travel",
+          "description": "Click \"Group Travel\" in the sidebar."
+        },
+        {
+          "title": "Enter Company Information (Step 1)",
+          "description": "Select the group travel type, enter the company name (English and optionally Arabic), choose destination, inception date, and period."
+        },
+        {
+          "title": "Add Group Members (Step 2)",
+          "description": "Click \"Next\", then click \"Add Member\" to open the member form. Enter each member's name, passport, date of birth, phone, gender, and select their add-ons (Trip Cancellation, Winter Sports, COVID-19). Click \"Save\" to add them to the group."
+        },
+        {
+          "title": "Manage Members",
+          "description": "The members table shows all added travelers. Use the Edit button to modify a member or the Delete button to remove them. The member count badge updates automatically."
+        },
+        {
+          "title": "Review Group Premium",
+          "description": "The total premium for all members is displayed together. It updates when you add/remove members or change the period/destination."
+        },
+        {
+          "title": "Save Group Policy",
+          "description": "Select the payment method and click \"Save Group Policy\". You must have at least one member to save."
+        }
+      ],
+      "fields": [
+        {
+          "name": "Company Name (English)",
+          "description": "The group/company name in English",
+          "required": true
+        },
+        {
+          "name": "Company Name (Arabic)",
+          "description": "The group/company name in Arabic",
+          "required": false
+        },
+        {
+          "name": "Destination",
+          "description": "Where the group is traveling to",
+          "required": true
+        },
+        {
+          "name": "Inception Date",
+          "description": "Group policy start date",
+          "required": true
+        },
+        {
+          "name": "Period",
+          "description": "Coverage duration for all members",
+          "required": true
+        }
+      ],
+      "tips": [
+        "You must add at least one member before saving a group policy.",
+        "All members in a group share the same destination, inception date, and period.",
+        "Each member can have different add-ons selected independently.",
+        "The total premium is the sum of all individual member premiums.",
+        "You can edit or remove members at any time before saving."
+      ],
+      "faqs": [
+        {
+          "question": "Is there a limit to the number of members in a group?",
+          "answer": "There is no hard limit on group size. However, larger groups may take longer to calculate premiums."
+        },
+        {
+          "question": "Can members have different travel dates?",
+          "answer": "No. All members in a group share the same inception date, period, and destination. For different dates, create separate policies."
+        },
+        {
+          "question": "How do I view a group policy after saving?",
+          "answer": "After saving, you are redirected to the Group Policy Details view showing all members, the company info, and the total premium breakdown."
+        }
+      ]
+    },
+    {
+      "id": "inquiry",
+      "title": "Policy Inquiry",
+      "subtitle": "Search & retrieve existing policies",
+      "icon": "bi-search",
+      "tabIndex": 4,
+      "overview": "The Inquiry section lets you search for existing policies using various filters. You can search for both Individual and Group policies. Results are displayed in a paginated table, and you can click any policy to view its full details.",
+      "steps": [
+        {
+          "title": "Open Inquiry",
+          "description": "Click \"Inquiry\" in the sidebar."
+        },
+        {
+          "title": "Choose Search Type",
+          "description": "Select the \"Individual\" or \"Group\" tab at the top of the form."
+        },
+        {
+          "title": "Enter Search Criteria",
+          "description": "Fill in any combination of filters: name, passport number, policy number, policy type, date range, or office. More criteria = more precise results."
+        },
+        {
+          "title": "View Results",
+          "description": "Click \"Find Policy\" to search. Results appear in a table showing key details. The system returns up to 100 individual policies or 30 group policies per search."
+        },
+        {
+          "title": "Open Policy Details",
+          "description": "Click the policy reference number (shown as a blue link) to view the full policy details."
+        }
+      ],
+      "tips": [
+        "Policy Number gives the fastest and most accurate results.",
+        "Passport Number finds all policies associated with a specific traveler.",
+        "Combine name fields with a date range for broader searches.",
+        "Use the Office filter to narrow results to a specific branch or agency.",
+        "Results are paginated with 12 items per page — use navigation buttons to browse.",
+        "For group policies, search by Company Name or Policy Number."
+      ],
+      "faqs": [
+        {
+          "question": "Why are my search results limited?",
+          "answer": "To maintain system performance, individual searches return a maximum of 100 results and group searches return up to 30. Use more specific criteria to narrow your results."
+        },
+        {
+          "question": "Can I see policies from other offices?",
+          "answer": "It depends on your role. Normal users can only see policies from their own office. Admin and Query users can see policies from all offices."
+        },
+        {
+          "question": "What do the status badges mean?",
+          "answer": "Draft means the policy is created but not yet paid. Active/Printed means the policy has been paid and finalized."
+        }
+      ]
+    },
+    {
+      "id": "reports",
+      "title": "Reports",
+      "subtitle": "Generate & export system reports",
+      "icon": "bi-file-earmark-bar-graph-fill",
+      "tabIndex": 5,
+      "overview": "The Reports Center allows administrators to generate and download system reports in CSV format. Each report can be configured with a date range before exporting.",
+      "steps": [
+        {
+          "title": "Open Reports",
+          "description": "Click \"Reports\" in the sidebar."
+        },
+        {
+          "title": "Select a Report",
+          "description": "Click on a report card to expand it. Available reports: Re-Insurance Report and Policies Report."
+        },
+        {
+          "title": "Set Date Range",
+          "description": "Select the \"From\" and \"To\" dates for the report period."
+        },
+        {
+          "title": "Generate & Download",
+          "description": "Click \"Generate\". The system processes the data and automatically downloads a CSV file to your computer."
+        }
+      ],
+      "tips": [
+        "Re-Insurance Report includes policy details, coverage amounts, and reinsurance allocations.",
+        "Policies Report covers all individual and group policies with premium and client details.",
+        "Reports are downloaded as CSV files that can be opened in Excel.",
+        "Only users with Admin access can generate reports."
+      ],
+      "faqs": [
+        {
+          "question": "What format are reports in?",
+          "answer": "All reports are exported as CSV (Comma-Separated Values) files, which can be opened in Microsoft Excel, Google Sheets, or any spreadsheet application."
+        },
+        {
+          "question": "Can I generate a report for a specific office?",
+          "answer": "Reports cover all policies within your company group for the selected date range. Use Excel filters after downloading to narrow by office."
+        }
+      ]
+    },
+    {
+      "id": "premium-calculator",
+      "title": "Premium Calculator",
+      "subtitle": "Quick premium estimates",
+      "icon": "bi-calculator-fill",
+      "tabIndex": 7,
+      "overview": "The Premium Calculator lets you quickly estimate insurance premiums without creating a policy. This is useful for providing quotes to clients before committing to a policy. It supports Individual, Group, and Student calculations.",
+      "steps": [
+        {
+          "title": "Open Calculator",
+          "description": "Click \"Premium Calculator\" in the sidebar."
+        },
+        {
+          "title": "Select Calculation Type",
+          "description": "Choose from three tabs: Individual Travel, Group Travel, or Student Plan."
+        },
+        {
+          "title": "Enter Parameters",
+          "description": "For Individual/Student: select destination, period, and date of birth. For Group: select destination and period, then add members with their dates of birth and add-ons."
+        },
+        {
+          "title": "Toggle Add-ons",
+          "description": "Check or uncheck COVID-19, Trip Cancellation, and Winter Sports to see how they affect the premium."
+        },
+        {
+          "title": "Calculate",
+          "description": "Click \"Calculate Premium\". The result is displayed instantly in U.S. Dollars."
+        }
+      ],
+      "tips": [
+        "The calculator does not save any data — it is purely for estimates.",
+        "Use it to compare prices across Individual, Group, and Student plans for the same trip.",
+        "Group premiums show the total for all members and the member count.",
+        "Add-ons can significantly affect the premium — toggle them to show clients the difference."
+      ],
+      "faqs": [
+        {
+          "question": "Is the calculated premium binding?",
+          "answer": "No. The calculator provides estimates only. The final premium is determined when you create the actual policy and may vary if pricing has been updated."
+        },
+        {
+          "question": "Can I save or print the calculation?",
+          "answer": "The calculator does not have a save or print function. Note down the result or take a screenshot to share with your client."
+        }
+      ]
+    },
+    {
+      "id": "admin",
+      "title": "Administrator Panel",
+      "subtitle": "System configuration & management",
+      "icon": "bi-gear-fill",
+      "tabIndex": 6,
+      "overview": "The Administrator panel provides access to system configuration and management functions. Only users with Admin role can access these features. The panel displays cards for each function — click a card to open that management section.",
+      "steps": [
+        {
+          "title": "Users Management",
+          "description": "Create, edit, delete, and lock/unlock user accounts. Assign roles (Normal, Admin, Query, Company Admin, Agencies Query), offices, and permissions."
+        },
+        {
+          "title": "Currency Rates",
+          "description": "Manage USD to NIS exchange rates. Add new rates with effective dates. View rate history and delete outdated entries."
+        },
+        {
+          "title": "Travel Agencies",
+          "description": "Add, edit, and delete travel agency/broker partners. View and manage agency offices."
+        },
+        {
+          "title": "Company Offices",
+          "description": "Manage office locations and branches. Set broker codes and special discount percentages."
+        },
+        {
+          "title": "Accounts",
+          "description": "Manage financial/cash accounts. Set credit limits, broker commission percentages, and registration IDs."
+        },
+        {
+          "title": "Agency Commissions",
+          "description": "Configure commission rates per agency/broker. Set IRS IDs and company group assignments."
+        },
+        {
+          "title": "Travel Prices",
+          "description": "Manage the full pricing matrix: plan type, coverage zone, period, age bracket, premium, commission, retention, re-insurance, and fees. Use filters to find specific pricing entries."
+        },
+        {
+          "title": "Export Travel Data",
+          "description": "Export travel data and active insured client lists. Downloads are in CSV format."
+        },
+        {
+          "title": "Delete Draft Policies",
+          "description": "Bulk-delete draft policies older than yesterday. Requires confirmation before execution."
+        }
+      ],
+      "tips": [
+        "Only Admin users can access this section. If you do not see the Administrator tab, your account does not have admin privileges.",
+        "Changes to pricing take effect for new policies immediately.",
+        "Always confirm before deleting users, offices, or accounts — deletions cannot be undone.",
+        "Use the search bar in each management section to quickly find entries.",
+        "Lock a user account to temporarily disable their access without deleting the account."
+      ],
+      "faqs": [
+        {
+          "question": "How do user roles differ?",
+          "answer": "Normal User: creates and views own-office policies. Admin: full access to everything. Query User: read-only across all offices. Company Admin: manages policies across multiple offices. Agencies Query: read-only across agency/broker policies."
+        },
+        {
+          "question": "How does the pricing matrix work?",
+          "answer": "Each price entry defines a premium for a specific combination of: plan type, coverage zone, duration, and age bracket. When a policy is created, the system finds the matching price entry to calculate the premium."
+        },
+        {
+          "question": "What happens when I delete a draft policy?",
+          "answer": "Draft policies that have not been paid are permanently removed. This cannot be undone. The \"Delete Draft Policies\" function only removes drafts older than yesterday."
+        }
+      ],
+      "roles": [
+        2,
+        3
+      ]
+    }
+  ]
+}

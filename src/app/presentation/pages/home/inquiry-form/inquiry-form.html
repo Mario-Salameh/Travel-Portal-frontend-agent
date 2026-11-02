@@ -1,0 +1,208 @@
+<div class="container p-3">
+  <div class="row">
+    <div class="d-flex flex-column pe-3 col-7">
+      <div class="mb-4">
+        <h2 class="mb-1">Policy Inquiry</h2>
+        <small class="text-muted">Search for travel insurance policies</small>
+
+        <div class="d-flex gap-2 mt-3">
+          <button
+            type="button"
+            class="btn px-4 flex-grow-1"
+            [class]="selectedTab === 'individual' ? 'btn-primary' : 'btn-outline-secondary'"
+            (click)="selectTab('individual')"
+          >
+            <i class="bi bi-person-fill me-2"></i>Individual
+          </button>
+          <button
+            type="button"
+            class="btn px-4 flex-grow-1"
+            [class]="selectedTab === 'group' ? 'btn-primary' : 'btn-outline-secondary'"
+            (click)="selectTab('group')"
+          >
+            <i class="bi bi-people-fill me-2"></i>Group
+          </button>
+        </div>
+      </div>
+
+      @if (selectedTab === 'individual') {
+        <form
+          [formGroup]="individualForm"
+          (ngSubmit)="onSubmitIndividual()"
+          class="d-flex flex-column gap-4"
+        >
+          <div>
+            <h6 class="text-secondary fw-semibold mb-2">Personal Information</h6>
+            <hr class="mt-0 mb-3" />
+            <div class="row g-3">
+              <div class="col-4">
+                <app-form-text-input
+                  label="First Name"
+                  formControlName="firstName"
+                ></app-form-text-input>
+              </div>
+              <div class="col-4">
+                <app-form-text-input
+                  label="Last Name"
+                  formControlName="lastName"
+                ></app-form-text-input>
+              </div>
+              <div class="col-4">
+                <app-form-text-input
+                  label="Passport Number"
+                  formControlName="passportNumber"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h6 class="text-secondary fw-semibold mb-2">Policy Details</h6>
+            <hr class="mt-0 mb-3" />
+            <div class="row">
+              <div class="col-6">
+                <app-form-text-input
+                  label="Policy Type"
+                  [options]="policyTypes"
+                  formControlName="policyType"
+                ></app-form-text-input>
+              </div>
+              <div class="col-6">
+                <app-form-text-input
+                  label="Policy Number"
+                  formControlName="policyNumber"
+                ></app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6">
+                <app-form-text-input
+                  label="Period"
+                  [options]="periods"
+                  formControlName="period"
+                ></app-form-text-input>
+              </div>
+              <div class="col-6">
+                <app-form-text-input
+                  label="Office"
+                  [options]="offices"
+                  formControlName="office"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="text-secondary fw-semibold mb-2">Date Range</h6>
+            <hr class="mt-0 mb-3" />
+            <div class="row g-3">
+              <div class="col-6">
+                <app-form-text-input
+                  inputType="date"
+                  label="From Date"
+                  formControlName="fromDate"
+                ></app-form-text-input>
+              </div>
+              <div class="col-6">
+                <app-form-text-input
+                  inputType="date"
+                  label="To Date"
+                  formControlName="toDate"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success px-5">
+            <i class="bi bi-search me-2"></i>Find Policy
+          </button>
+        </form>
+      } @else {
+        <form [formGroup]="groupForm" (ngSubmit)="onSubmitGroup()" class="d-flex flex-column gap-4">
+          <div>
+            <h6 class="text-secondary fw-semibold mb-2">Company Information</h6>
+            <hr class="mt-0 mb-3" />
+            <div class="row g-3">
+              <div class="col-8">
+                <app-form-text-input
+                  label="Company Name"
+                  formControlName="companyName"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h6 class="text-secondary fw-semibold mb-2">Policy Details</h6>
+            <hr class="mt-0 mb-3" />
+            <div class="row g-3">
+              <div class="col-6">
+                <app-form-text-input
+                  label="Policy Number"
+                  formControlName="policyNumber"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <h6 class="text-secondary fw-semibold mb-2">Date Range</h6>
+            <hr class="mt-0 mb-3" />
+            <div class="row g-3">
+              <div class="col-6">
+                <app-form-text-input
+                  inputType="date"
+                  label="From Date"
+                  formControlName="fromDate"
+                ></app-form-text-input>
+              </div>
+              <div class="col-6">
+                <app-form-text-input
+                  inputType="date"
+                  label="To Date"
+                  formControlName="toDate"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success px-5">
+            <i class="bi bi-search me-2"></i>Find Policy
+          </button>
+        </form>
+      }
+    </div>
+
+    <div class="col-5">
+      <div class="alert alert-info mb-3">
+        <h6 class="alert-heading fw-bold mb-2">
+          <i class="bi bi-lightbulb-fill me-2"></i>Inquiry Guide
+        </h6>
+        <hr class="my-2" />
+        <p class="mb-2 small">Tips for finding policies quickly:</p>
+        <ul class="small mb-0">
+          <li class="mb-1">
+            Use <strong>Policy Number</strong> for the fastest and most accurate results
+          </li>
+          <li class="mb-1">
+            Search by <strong>Passport Number</strong> to find all policies for a traveler
+          </li>
+          <li class="mb-1">
+            Combine <strong>First Name</strong> and <strong>Last Name</strong> for name-based search
+          </li>
+          <li class="mb-1">Use <strong>Date Range</strong> to filter policies by creation date</li>
+          <li class="mb-1">
+            Select <strong>Office</strong> to narrow results to a specific branch
+          </li>
+        </ul>
+      </div>
+
+      <div class="alert alert-warning mb-0">
+        <h6 class="alert-heading fw-bold mb-2"><i class="bi bi-info-circle-fill me-2"></i>Note</h6>
+        <hr class="my-2" />
+        <p class="small mb-0">For best results, provide as much information as possible.</p>
+      </div>
+    </div>
+  </div>
+</div>

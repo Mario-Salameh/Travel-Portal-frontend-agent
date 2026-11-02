@@ -1,0 +1,258 @@
+<div
+  class="modal d-block"
+  tabindex="-1"
+  style="background-color: rgba(0, 0, 0, 0.5)"
+  (click)="cancel()"
+>
+  <div
+    class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-content">
+      <div class="modal-header bg-primary bg-opacity-10">
+        <div class="d-flex align-items-center gap-2">
+          <i class="bi bi-person-fill fs-4 text-primary"></i>
+          <h5 class="modal-title mb-0">
+            {{ memberIndex !== undefined ? 'Edit Member #' + (memberIndex + 1) : 'Add New Member' }}
+          </h5>
+        </div>
+        <button type="button" class="btn-close" (click)="cancel()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="memberForm">
+          <!-- Personal Information (English) -->
+          <h6 class="text-primary fw-semibold mb-3">
+            <i class="bi bi-person me-2"></i>Personal Information (English)
+          </h6>
+          <div class="row g-3 mb-4">
+            <div class="col-4">
+              <app-form-text-input label="First Name" formControlName="firstNameNative">
+              </app-form-text-input>
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input label="Father Name" formControlName="fatherNameNative">
+              </app-form-text-input>
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input label="Family Name" formControlName="lastNameNative">
+              </app-form-text-input>
+            </div>
+
+            <div class="col-12">
+              <app-form-text-input label="Address" formControlName="addressNative">
+              </app-form-text-input>
+            </div>
+          </div>
+
+          <!-- Personal Information (Arabic) -->
+          <!-- <h6 class="text-primary fw-semibold mb-3">
+            <i class="bi bi-translate me-2"></i>Personal Information (Arabic)
+          </h6>
+          <div class="row g-3 mb-4">
+            <div class="col-4">
+              <app-form-text-input label="First Name (Arabic)" formControlName="firstNameForeign">
+              </app-form-text-input>
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input label="Father Name (Arabic)" formControlName="fatherNameForeign">
+              </app-form-text-input>
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input label="Family Name (Arabic)" formControlName="lastNameForeign">
+              </app-form-text-input>
+            </div>
+
+            <div class="col-12">
+              <app-form-text-input label="Address (Arabic)" formControlName="addressForeign">
+              </app-form-text-input>
+            </div>
+          </div> -->
+          <!-- Arabic Information Toggle -->
+          <div
+            class="d-flex align-items-center justify-content-between border-top border-bottom py-3 mb-3"
+          >
+            <div class="d-flex align-items-center gap-2">
+              <i class="bi bi-translate text-primary"></i>
+              <span class="fw-semibold">Personal Information (Arabic)</span>
+              <span class="badge bg-secondary">Optional</span>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary d-flex align-items-center gap-2"
+              (click)="toggleArabicFields()"
+            >
+              {{ showArabicFields ? 'Hide Fields' : 'Show Fields' }}
+
+              <i
+                class="bi"
+                [class.bi-chevron-down]="!showArabicFields"
+                [class.bi-chevron-up]="showArabicFields"
+              ></i>
+            </button>
+          </div>
+
+          <!-- Arabic Fields -->
+          <div class="collapse" [class.show]="showArabicFields">
+            <div class="row g-3 mb-4">
+              <div class="col-4">
+                <app-form-text-input
+                  label="First Name (Arabic)"
+                  formControlName="firstNameForeign"
+                />
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  label="Father Name (Arabic)"
+                  formControlName="fatherNameForeign"
+                />
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  label="Family Name (Arabic)"
+                  formControlName="lastNameForeign"
+                />
+              </div>
+
+              <div class="col-12">
+                <app-form-text-input label="Address (Arabic)" formControlName="addressForeign" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact & Identity -->
+          <h6 class="text-primary fw-semibold mb-3">
+            <i class="bi bi-card-text me-2"></i>Contact & Identity
+          </h6>
+          <div class="row g-3 mb-4">
+            <div class="col-4">
+              <!-- <app-form-text-input
+                label="Phone Number"
+                inputType="tel"
+                formControlName="phoneNumber"
+              >
+              </app-form-text-input> -->
+
+              <app-phone-number-input-field
+                label="Phone Number"
+                formControlName="phoneNumber"
+                [defaultCountry]="'PS'"
+              />
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input label="Fax Number" inputType="tel" formControlName="fax">
+              </app-form-text-input>
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input
+                label="Passport ID"
+                formControlName="passportNumber"
+                [uppercase]="true"
+              >
+              </app-form-text-input>
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input
+                label="Date of Birth"
+                inputType="date"
+                formControlName="birthDate"
+                [max]="maxDateOfBirth"
+              >
+              </app-form-text-input>
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input
+                label="Nationality"
+                formControlName="nationalityCountryCode"
+                [options]="countries"
+              >
+              </app-form-text-input>
+            </div>
+
+            <div class="col-4">
+              <app-form-text-input
+                label="Gender"
+                formControlName="passengerGender"
+                [options]="genders"
+              >
+              </app-form-text-input>
+            </div>
+          </div>
+
+          <!-- Coverage Add-ons -->
+          <h6 class="text-primary fw-semibold mb-3">
+            <i class="bi bi-shield-check me-2"></i>Coverage Add-ons (Optional)
+          </h6>
+          <div class="row g-2">
+            <div class="col-12">
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="tripCancellation"
+                      formControlName="tripCancellationFlag"
+                    />
+                    <label class="form-check-label" for="tripCancellation">
+                      Trip Cancellation Limit To 5000$ (Optional)
+                    </label>
+                  </div>
+                </li>
+
+                <li class="list-group-item">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="winterSki"
+                      formControlName="winterSkiFlag"
+                    />
+                    <label class="form-check-label" for="winterSki">
+                      Winter Ski / Summer Sports Extension (Optional)
+                    </label>
+                  </div>
+                </li>
+
+                <li class="list-group-item">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="covid"
+                      formControlName="covidFlag"
+                    />
+                    <label class="form-check-label" for="covid">
+                      COVID 19 up to 30000 Euro (Optional)
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+          <i class="bi bi-x-lg me-1"></i> Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="saveMember()">
+          <i class="bi bi-check-lg me-1"></i>
+          {{ memberIndex !== undefined ? 'Update Member' : 'Add Member' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

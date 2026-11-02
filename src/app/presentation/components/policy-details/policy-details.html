@@ -1,0 +1,356 @@
+<div class="container py-4 overflow-y-auto" style="height: 100%">
+  <div class="row gy-3">
+    <div class="col-xl-8 col-12">
+      <div
+        class="card border-0 mb-4"
+        style="background: linear-gradient(135deg, #922b21 0%, #d68910 100%)"
+      >
+        <div class="card-body py-3 px-4 text-white">
+          <div class="row align-items-center">
+            <div class="col-auto">
+              <small class="text-uppercase opacity-75">Policy Reference</small>
+            </div>
+            <div class="col text-center">
+              @if (isGroupPolicy()) {
+                <span class="fs-5 fw-bold">{{ groupPolicy().policyNumber }}</span>
+              } @else {
+                <span class="fs-5 fw-bold">{{ singlePolicy().referenceKey }}</span>
+              }
+            </div>
+            <div class="col-auto text-end">
+              <small class="text-uppercase opacity-75" dir="rtl">رقم الوثيقة</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      @if (isGroupPolicy()) {
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white border-bottom py-3">
+            <h6 class="mb-0 fw-bold" style="color: #922b21">
+              <i class="bi bi-building me-2"></i>Company Information
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="bg-light rounded p-3 mb-3">
+              <div class="row">
+                <div class="col-sm-6">
+                  <small class="text-muted d-block mb-1">Company Name</small>
+                  <span class="fw-semibold">{{ groupPolicy().companyNameNative }}</span>
+                </div>
+                <div class="col-sm-6 text-sm-end" dir="rtl">
+                  <small class="text-muted d-block mb-1">اسم الشركة</small>
+                  <span class="fw-semibold">{{ groupPolicy().companyNameForeign }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Origin Country</small>
+                <span class="fw-semibold text-dark">{{ originCountryNameNative() }}</span>
+              </div>
+              <div class="col-sm-6 text-sm-end" dir="rtl">
+                <small class="text-muted d-block">بلد المنشأ</small>
+                <span class="fw-semibold text-dark">{{ originCountryNameForeign() }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white border-bottom py-3">
+            <h6 class="mb-0 fw-bold" style="color: #922b21">
+              <i class="bi bi-person-fill me-2"></i>Personal Information
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="bg-light rounded p-3 mb-3">
+              <div class="row">
+                <div class="col-sm-6">
+                  <small class="text-muted d-block mb-1">Full Name</small>
+                  <span class="fw-semibold">{{ singlePolicy().fullNameNative }}</span>
+                </div>
+                <div class="col-sm-6 text-sm-end" dir="rtl">
+                  <small class="text-muted d-block mb-1">الاسم الكامل</small>
+                  <span class="fw-semibold">{{ singlePolicy().fullNameForeign }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-sm-4 col-6">
+                <small class="text-muted d-block">Date of Birth</small>
+                <span class="fw-semibold text-dark">{{
+                  formatDate(singlePolicy().birthDate)
+                }}</span>
+              </div>
+              <div class="col-sm-4 col-6">
+                <small class="text-muted d-block">Gender</small>
+                <span class="fw-semibold text-dark">{{
+                  singlePolicy().passengerGender === 1 ? 'Male' : 'Female'
+                }}</span>
+              </div>
+              <div class="col-sm-4 col-6">
+                <small class="text-muted d-block">Nationality</small>
+                <span class="fw-semibold text-dark">{{ nationalityNameNative() }}</span>
+              </div>
+              <div class="col-sm-4 col-6">
+                <small class="text-muted d-block">Passport No.</small>
+                <span class="fw-semibold text-dark">{{ singlePolicy().passportNumber }}</span>
+              </div>
+              <div class="col-sm-4 col-6">
+                <small class="text-muted d-block">Phone No.</small>
+                <span class="fw-semibold text-dark">{{ singlePolicy().phoneNumber || 'N/A' }}</span>
+              </div>
+              <div class="col-sm-4 col-6">
+                <small class="text-muted d-block">Permanent Address</small>
+                <span class="fw-semibold text-dark">{{
+                  singlePolicy().addressNative || 'N/A'
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="card border-0 shadow-sm" [class.mb-4]="isGroupPolicy()">
+        <div class="card-header bg-white border-bottom py-3">
+          <h6 class="mb-0 fw-bold" style="color: #922b21">
+            <i class="bi bi-shield-check me-2"></i>Insurance Details
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="row g-3 mb-4">
+            <div class="col-sm-6">
+              <div class="bg-light rounded p-3 h-100">
+                <small class="text-muted d-block mb-1">Destination / الوجهة</small>
+                <span class="fw-semibold text-dark">{{ destinationCountryNameNative() }}</span>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="bg-light rounded p-3 h-100">
+                <small class="text-muted d-block mb-1">Type of Coverage / النطاق</small>
+                <span class="fw-semibold text-dark">{{ typeofCoverageNameNative() }}</span>
+              </div>
+            </div>
+          </div>
+
+          @if (isGroupPolicy()) {
+            <div class="row text-center g-0 border rounded overflow-hidden mb-4">
+              <div class="col-4 p-3 border-end bg-white">
+                <small class="text-muted d-block mb-1">Start Date</small>
+                <span class="fw-semibold" style="color: #1e8449">{{
+                  formatDate(groupPolicy().startDate)
+                }}</span>
+              </div>
+              <div class="col-4 p-3 border-end bg-white">
+                <small class="text-muted d-block mb-1">Period</small>
+                <span class="fw-semibold text-dark">{{ periodTextNative() }}</span>
+              </div>
+
+              <div class="col-4 p-3 border-end bg-white">
+                <small class="text-muted d-block mb-1">Expiry Date</small>
+                <span class="fw-semibold text-danger">{{ formatDate(expiryDate()) }}</span>
+              </div>
+            </div>
+          } @else {
+            <div class="row text-center g-0 border rounded overflow-hidden mb-4">
+              <div class="col-4 p-3 border-end bg-white">
+                <small class="text-muted d-block mb-1">Inception Date</small>
+                <span class="fw-semibold" style="color: #1e8449">{{
+                  formatDate(singlePolicy().startDate)
+                }}</span>
+              </div>
+
+              <div class="col-4 p-3 bg-white">
+                <small class="text-muted d-block mb-1">Period (Days)</small>
+                <span class="fw-semibold text-dark">{{ singlePolicy().duration }} Days</span>
+              </div>
+
+              <div class="col-4 p-3 border-end bg-white">
+                <small class="text-muted d-block mb-1">Expiry Date</small>
+                <span class="fw-semibold text-danger">{{ formatDate(expiryDate()) }}</span>
+              </div>
+            </div>
+
+            <div class="row px-3">
+              @for (entry of optionalParameters(); track entry[0]) {
+                <div class="col-4 bg-light p-3 d-flex align-items-center justify-content-center">
+                  <small class="text-muted me-2">{{ entry[0] }}</small>
+                  <span class="badge" [ngClass]="entry[1] ? 'bg-success' : 'bg-secondary'">
+                    {{ entry[1] ? 'Yes' : 'No' }}
+                  </span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (isGroupPolicy()) {
+        <div class="card border-0 shadow-sm">
+          <div
+            class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between"
+          >
+            <h6 class="mb-0 fw-bold" style="color: #922b21">
+              <i class="bi bi-people-fill me-2"></i>Group Members
+            </h6>
+            <span class="badge" style="background-color: #922b21">{{ membersCount }} members</span>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Reference No.</th>
+                    <th>Full Name</th>
+                    <th>Passport</th>
+                    <th>Birth Date</th>
+                    <th>Gender</th>
+                    <th class="pe-3 text-end">Premium</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (member of sortedPolicies(); track member.serial; let i = $index) {
+                    <tr>
+                      <td>
+                        <button
+                          class="btn btn-link px-2 p-0 fw-medium"
+                          (click)="handleMemberClick(member.referenceKey ?? '')"
+                        >
+                          {{ member.referenceKey + ' ' + member.serial }}
+                        </button>
+                      </td>
+                      <td>
+                        <div>
+                          <span class="fw-semibold d-block"
+                            >{{ member.firstName }} {{ member.lastName }}</span
+                          >
+                          <small class="text-muted" dir="rtl"
+                            >{{ member.firstNameForeign }} {{ member.lastNameForeign }}</small
+                          >
+                        </div>
+                      </td>
+                      <td>{{ member.passportNumber }}</td>
+                      <td>{{ formatDate(member.birthDate) }}</td>
+                      <td>
+                        <span
+                          class="badge"
+                          [class.bg-primary]="member.passengerGender === 1"
+                          [class.bg-danger]="member.passengerGender === 2"
+                        >
+                          {{ getGenderText(member.passengerGender).en }}
+                        </span>
+                      </td>
+                      <td class="pe-3 text-end fw-semibold">
+                        ${{ member.totalPremium?.toFixed(2) }}
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="col-xl-4 col-12">
+      @if (isGroupPolicy()) {
+        <app-price [price]="totalPremium" label="Total Premium / U.S $"></app-price>
+      } @else {
+        <app-price [price]="singlePolicy().totalPremium ?? 0"></app-price>
+      }
+
+      @if (isGroupPolicy()) {
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body text-center py-4">
+            <div class="row g-3">
+              <div class="col-6">
+                <div class="bg-light rounded p-3">
+                  <i class="bi bi-people fs-3" style="color: #922b21"></i>
+                  <h4 class="fw-bold mb-0 mt-2">{{ membersCount }}</h4>
+                  <small class="text-muted">Members</small>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="bg-light rounded p-3">
+                  <i class="bi bi-currency-dollar fs-3" style="color: #1e8449"></i>
+                  <h4 class="fw-bold mb-0 mt-2">
+                    ${{ (totalPremium / (membersCount || 1)).toFixed(2) }}
+                  </h4>
+                  <small class="text-muted">Avg. Premium</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="card border-0">
+        <div class="card-body">
+          <div class="btn-group w-100 mb-3" role="group">
+            @if (!originalPolicyGenerated) {
+            @if (policy()?.policyStatus === 0 ) {
+              <input
+                type="radio"
+                class="btn-check"
+                name="draftOpt"
+                id="d"
+                [value]="true"
+                [(ngModel)]="isDraft"
+              />
+              <label class="btn btn-outline-secondary" for="d">Draft</label>
+            }
+          }
+            <input
+              type="radio"
+              class="btn-check"
+              name="origOpt"
+              id="o"
+              [value]="false"
+              [(ngModel)]="isDraft"
+            />
+            <label class="btn btn-outline-secondary" for="o">Original</label>
+          </div>
+
+          <button
+            class="btn btn-success w-100 text-white fw-semibold mb-2"
+            (click)="requestPrintPolicy()"
+          >
+            <i class="bi bi-printer-fill me-2"></i>
+            @if (isGroupPolicy()) {
+              Print Group Schedule
+            } @else {
+              Print Schedule
+            }
+          </button>
+@if (!originalPolicyGenerated) {
+          @if (isGroupPolicy()) {
+            @if (groupPolicy().policyStatus === 0  ) {
+              <button
+                class="btn btn-outline-secondary w-100 fw-semibold mb-3"
+                (click)="updatePolicy()"
+              >
+                <i class="bi bi-arrow-repeat me-2"></i>Update Policy
+              </button>
+            }
+          } @else {
+            @if (singlePolicy().policyStatus === 0 ) {
+              <button
+                class="btn btn-outline-secondary w-100 fw-semibold mb-3"
+                (click)="updatePolicy()"
+
+              >
+                <i class="bi bi-arrow-repeat me-2"></i>Update Policy
+              </button>
+            }
+          }
+        }
+
+          <hr class="my-3" />
+          <app-files-download [data]="filesToDownload"></app-files-download>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

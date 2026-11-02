@@ -1,0 +1,90 @@
+<div class="ts-stage" [style.--ts-accent]="theme().accent">
+  <div class="ts-splash">
+    <div class="ts-logo-wrap" [style.width]="markSize()">
+      <svg
+        class="ts-logo"
+        viewBox="0 0 490 506"
+        shape-rendering="crispEdges"
+        [attr.aria-label]="primaryText() + ' ' + accentText()"
+      >
+        <defs>
+          <linearGradient
+            [attr.id]="gid('tg')"
+            gradientUnits="userSpaceOnUse"
+            x1="0"
+            y1="42"
+            x2="0"
+            y2="481"
+          >
+            <stop offset="0" [attr.stop-color]="theme().start" />
+            <stop offset="0.52" [attr.stop-color]="theme().mid" />
+            <stop offset="1" [attr.stop-color]="theme().end" />
+          </linearGradient>
+
+          <filter [attr.id]="gid('blur')" x="-20%" y="-300%" width="140%" height="700%">
+            <feGaussianBlur stdDeviation="2.2" />
+          </filter>
+        </defs>
+
+        <!-- Mark: core (static left half) + 7 scatter pieces (right half) -->
+        <g class="ts-mark">
+          <g class="ts-core">
+            @for (r of core; track $index) {
+              <rect
+                [attr.x]="r[0]"
+                [attr.y]="r[1]"
+                [attr.width]="r[2]"
+                [attr.height]="r[3]"
+                [attr.fill]="fill('tg')"
+              />
+            }
+          </g>
+          <g class="ts-pieces">
+            @for (p of pieces; track p.id) {
+              <g class="ts-piece" [attr.data-piece]="p.id">
+                @for (r of p.rects; track $index) {
+                  <rect
+                    [attr.x]="r[0]"
+                    [attr.y]="r[1]"
+                    [attr.width]="r[2]"
+                    [attr.height]="r[3]"
+                    [attr.fill]="fill('tg')"
+                  />
+                }
+              </g>
+            }
+          </g>
+        </g>
+
+        <g class="ts-sparks"></g>
+
+        <rect
+          class="ts-flash"
+          x="241"
+          y="30"
+          width="8"
+          height="462"
+          fill="#fff"
+          [attr.filter]="fill('blur')"
+        />
+      </svg>
+    </div>
+
+    @if (showWordmark()) {
+      <div class="ts-copy">
+        <div class="ts-word">
+          <span class="ts-seg ts-trust">
+            @for (c of primaryChars(); track $index) {
+              <span class="ts-ch">{{ c }}</span>
+            }
+          </span>
+          <span class="ts-seg ts-bi">
+            @for (c of accentChars(); track $index) {
+              <span class="ts-ch">{{ c }}</span>
+            }
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+</div>

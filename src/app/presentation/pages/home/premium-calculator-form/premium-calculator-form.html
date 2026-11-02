@@ -1,0 +1,292 @@
+<div class="container py-3 h-100 d-flex flex-column">
+  <!-- Header -->
+  <div
+    class="card border-0 mb-4"
+    style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%)"
+  >
+    <div class="card-body py-4 px-4">
+      <div class="d-flex align-items-center">
+        <div class="bg-white bg-opacity-25 rounded-3 p-3 me-3">
+          <i class="bi bi-calculator-fill text-white fs-3"></i>
+        </div>
+        <div class="text-white">
+          <h4 class="fw-bold mb-1">Premium Calculator</h4>
+          <p class="mb-0 opacity-75">Calculate insurance premiums for different policy types</p>
+        </div>
+        <div class="ms-auto text-white d-none d-md-block">
+          <i class="bi bi-calculator" style="font-size: 3rem; opacity: 0.15"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Pills -->
+  <ul class="nav nav-pills gap-2 mb-3 flex-shrink-0">
+    @for (tab of tabs; let i = $index; track i) {
+      <li class="nav-item">
+        <button
+          class="nav-link d-flex align-items-center gap-2 border"
+          [class.active]="activeTab() === i"
+          [class.bg-dark]="activeTab() === i"
+          [class.text-white]="activeTab() === i"
+          (click)="switchTab(i)"
+        >
+          <i class="bi" [ngClass]="tab.icon"></i>
+          {{ tab.label }}
+        </button>
+      </li>
+    }
+  </ul>
+
+  <!-- Content Area -->
+  <div class="flex-grow-1 overflow-auto">
+
+    <!-- ============ Individual / Student Tab ============ -->
+    @if (activeTab() === 0 || activeTab() === 2) {
+      <div class="card border rounded-3">
+        <div class="card-body">
+          <h6 class="fw-semibold mb-3">
+            <i class="bi bi-sliders me-2 text-muted"></i>Calculation Parameters
+          </h6>
+          <form [formGroup]="singleForm">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <app-form-text-input
+                  label="Destination"
+                  formControlName="destination"
+                  [options]="countries"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-4">
+                <app-form-text-input
+                  label="Period"
+                  formControlName="period"
+                  [options]="currentPeriods"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-4">
+                <app-form-text-input
+                  label="Date of Birth"
+                  inputType="date"
+                  formControlName="birthDate"
+                ></app-form-text-input>
+              </div>
+            </div>
+
+            <h6 class="fw-semibold mt-3 mb-2">
+              <i class="bi bi-plus-circle me-2 text-muted"></i>Add-ons
+            </h6>
+            <div class="d-flex align-items-center gap-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="covidFlag" id="covidSingle" />
+                <label class="form-check-label" for="covidSingle">COVID-19</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="tripCancellationFlag" id="tripSingle" />
+                <label class="form-check-label" for="tripSingle">Trip Cancellation</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="winterSkiFlag" id="skiSingle" />
+                <label class="form-check-label" for="skiSingle">Winter Sports</label>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="card-footer bg-transparent d-flex align-items-center justify-content-between border-top py-3">
+          <div>
+            @if (calculating()) {
+              <span class="spinner-border spinner-border-sm me-2 text-muted"></span>
+              <span class="text-muted small">Calculating...</span>
+            }
+          </div>
+          @if (premiumResult() !== null) {
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted">Total Premium:</span>
+              <span class="fs-4 fw-bold font-monospace" style="color: #2c3e50">
+                {{ premiumResult() | number:'1.2-2' }} $
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- ============ Group Tab ============ -->
+    @if (activeTab() === 1) {
+      <div class="card border rounded-3">
+        <div class="card-body">
+          <h6 class="fw-semibold mb-3">
+            <i class="bi bi-sliders me-2 text-muted"></i>Trip Details
+          </h6>
+          <form [formGroup]="groupForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <app-form-text-input
+                  label="Destination"
+                  formControlName="destination"
+                  [options]="countries"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-6">
+                <app-form-text-input
+                  label="Period"
+                  formControlName="period"
+                  [options]="currentPeriods"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </form>
+
+          <!-- Members Section -->
+          <div class="d-flex align-items-center justify-content-between mt-3 mb-2">
+            <h6 class="mb-0 fw-semibold">
+              <i class="bi bi-people me-2 text-muted"></i>Members
+              <span class="badge bg-dark ms-1">{{ members().length }}</span>
+            </h6>
+            <button class="btn btn-outline-dark btn-sm" (click)="openAddMember()">
+              <i class="bi bi-plus-lg me-1"></i>Add Member
+            </button>
+          </div>
+
+          @if (members().length > 0) {
+            <div class="border rounded" style="max-height: 280px; overflow-y: auto">
+              <table class="table table-sm table-hover mb-0">
+                <thead class="table-light sticky-top">
+                  <tr>
+                    <th style="width: 40px">#</th>
+                    <th>Age</th>
+                    <th class="text-center">COVID</th>
+                    <th class="text-center">Trip Cancel</th>
+                    <th class="text-center">Winter</th>
+                    <th class="text-center" style="width: 80px">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (member of members(); let i = $index; track i) {
+                    <tr>
+                      <td class="text-muted">{{ i + 1 }}</td>
+                      <td class="font-monospace">{{ getMemberAge(member.birthDate) }}</td>
+                      <td class="text-center">
+                        <i
+                          class="bi"
+                          [ngClass]="member.covidFlag ? 'bi-check-circle-fill text-success' : 'bi-dash text-muted'"
+                        ></i>
+                      </td>
+                      <td class="text-center">
+                        <i
+                          class="bi"
+                          [ngClass]="member.tripCancellationFlag ? 'bi-check-circle-fill text-success' : 'bi-dash text-muted'"
+                        ></i>
+                      </td>
+                      <td class="text-center">
+                        <i
+                          class="bi"
+                          [ngClass]="member.winterSkiFlag ? 'bi-check-circle-fill text-success' : 'bi-dash text-muted'"
+                        ></i>
+                      </td>
+                      <td class="text-center">
+                        <button class="btn btn-link btn-sm p-0 me-2" (click)="openEditMember(i)" title="Edit">
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-link btn-sm p-0 text-danger" (click)="removeMember(i)" title="Remove">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <div class="text-center text-muted py-4 border rounded bg-light">
+              <i class="bi bi-people fs-3 d-block mb-1"></i>
+              <small>No members added yet. Click "Add Member" to start.</small>
+            </div>
+          }
+        </div>
+
+        <div class="card-footer bg-transparent d-flex align-items-center justify-content-between border-top py-3">
+          <div>
+            @if (calculating()) {
+              <span class="spinner-border spinner-border-sm me-2 text-muted"></span>
+              <span class="text-muted small">Calculating...</span>
+            }
+          </div>
+          @if (premiumResult() !== null) {
+            <div class="d-flex align-items-center gap-2">
+              <span class="text-muted">Total Premium ({{ members().length }} members):</span>
+              <span class="fs-4 fw-bold font-monospace" style="color: #2c3e50">
+                {{ premiumResult() | number:'1.2-2' }} $
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- ============ Add/Edit Member Modal ============ -->
+@if (showMemberModal) {
+  <div
+    class="modal d-block"
+    tabindex="-1"
+    style="background-color: rgba(0, 0, 0, 0.5)"
+    (click)="closeMemberModal()"
+  >
+    <div
+      class="modal-dialog modal-dialog-centered"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="bi bi-person me-2"></i>
+            {{ editingMemberIndex !== null ? 'Edit Member' : 'Add Member' }}
+          </h5>
+          <button type="button" class="btn-close" (click)="closeMemberModal()"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="memberForm">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <app-form-text-input
+                  label="Date of Birth"
+                  inputType="date"
+                  formControlName="birthDate"
+                ></app-form-text-input>
+              </div>
+            </div>
+            <h6 class="fw-semibold mt-3 mb-2">
+              <i class="bi bi-plus-circle me-2 text-muted"></i>Add-ons
+            </h6>
+            <div class="d-flex align-items-center gap-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="covidFlag" id="covidMember" />
+                <label class="form-check-label" for="covidMember">COVID-19</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="tripCancellationFlag" id="tripMember" />
+                <label class="form-check-label" for="tripMember">Trip Cancellation</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="winterSkiFlag" id="skiMember" />
+                <label class="form-check-label" for="skiMember">Winter Sports</label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-secondary" (click)="closeMemberModal()">
+            <i class="bi bi-x-lg me-1"></i>Cancel
+          </button>
+          <button class="btn btn-dark" (click)="saveMember()">
+            <i class="bi bi-check-lg me-1"></i>
+            {{ editingMemberIndex !== null ? 'Update' : 'Add' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

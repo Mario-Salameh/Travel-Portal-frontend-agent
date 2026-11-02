@@ -1,0 +1,129 @@
+<div class="container py-3 h-100 d-flex flex-column">
+  <div
+    class="card border-0 mb-4"
+    style="background: linear-gradient(135deg, #1e3a5f 0%, #4a90d9 100%)"
+  >
+    <div class="card-body py-4 px-4">
+      <div class="d-flex align-items-center">
+        <div class="bg-white bg-opacity-25 rounded-3 p-3 me-3">
+          <i class="bi bi-file-earmark-bar-graph-fill text-white fs-3"></i>
+        </div>
+        <div class="text-white">
+          <h4 class="fw-bold mb-1">Reports Center</h4>
+          <p class="mb-0 opacity-75">Generate and download system reports</p>
+        </div>
+        <div class="ms-auto text-white text-opacity-50 d-none d-md-block">
+          <i class="bi bi-graph-up-arrow" style="font-size: 3rem"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 overflow-auto pb-1">
+    @for (report of reports; track report.id) {
+      <div class="col-xxl-6" [hasRole]="report.roles">
+        <div
+          class="card border-0 shadow-sm"
+          style="transition: all 0.3s ease; cursor: pointer"
+          [style.transform]="activeReportId() === report.id ? 'scale(1)' : 'scale(1)'"
+          [style.box-shadow]="
+            activeReportId() === report.id
+              ? '0 0.5rem 2rem rgba(0,0,0,0.15)'
+              : '0 0.125rem 0.25rem rgba(0,0,0,0.075)'
+          "
+        >
+          <div class="rounded-top" style="height: 4px" [style.background]="report.gradient"></div>
+
+          <div class="card-body pb-0" (click)="openReport(report.id)">
+            <div class="d-flex align-items-start">
+              <div
+                class="rounded-3 p-3 me-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                [style.background]="report.gradient"
+                style="width: 56px; height: 56px"
+              >
+                <i class="bi text-white fs-4" [ngClass]="report.icon"></i>
+              </div>
+              <div class="flex-grow-1">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h5 class="fw-bold mb-1">{{ report.title }}</h5>
+                  <i
+                    class="bi fs-5 text-muted"
+                    [ngClass]="activeReportId() === report.id ? 'bi-chevron-up' : 'bi-chevron-down'"
+                    style="transition: transform 0.3s ease"
+                  ></i>
+                </div>
+                <p class="text-muted small mb-2">{{ report.description }}</p>
+                <div class="d-flex align-items-center gap-2 mb-3">
+                  <span class="badge bg-light text-dark border">
+                    <i class="bi bi-filetype-csv me-1"></i>CSV Export
+                  </span>
+                  <span class="badge bg-light text-dark border">
+                    <i class="bi bi-calendar-range me-1"></i>Date Range
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if (activeReportId() === report.id) {
+            <div class="card-body pt-0">
+              <hr class="my-2" />
+              <div class="bg-light rounded-3 p-3">
+                <label class="form-label fw-semibold text-muted small text-uppercase mb-2">
+                  <i class="bi bi-building me-1"></i>Select Office
+                </label>
+                <div class="mb-3">
+                  <app-form-text-input
+                    label="Office"
+                    [options]="offices"
+                    [formControl]="officeId"
+                  ></app-form-text-input>
+                </div>
+                <label class="form-label fw-semibold text-muted small text-uppercase mb-2">
+                  <i class="bi bi-calendar-event me-1"></i>Select Date Range
+                </label>
+                <div class="d-flex align-items-center gap-3">
+                  <div class="flex-grow-1">
+                    <app-form-text-input
+                      label="From"
+                      inputType="date"
+                      [formControl]="dateFrom"
+                    ></app-form-text-input>
+                  </div>
+                  <i class="bi bi-arrow-right text-muted mt-3"></i>
+                  <div class="flex-grow-1">
+                    <app-form-text-input
+                      label="To"
+                      inputType="date"
+                      [formControl]="dateTo"
+                    ></app-form-text-input>
+                  </div>
+                  <button
+                    class="btn btn-md px-3 text-white flex-shrink-0 mt-3"
+                    [style.background]="report.gradient"
+                    [disabled]="generatingReportId() === report.id"
+                    (click)="generateReport(report.id)"
+                  >
+                    @if (generatingReportId() === report.id) {
+                      <span class="spinner-border spinner-border-sm me-2"></span>
+                      Generating...
+                    } @else {
+                      <i class="bi bi-download me-2"></i>Generate
+                    }
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="text-center text-muted mt-auto">
+    <small>
+      <i class="bi bi-info-circle me-1"></i>
+      Click on a report card to configure and generate
+    </small>
+  </div>
+</div>

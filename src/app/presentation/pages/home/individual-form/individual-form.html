@@ -1,0 +1,368 @@
+<div class="container overflow-y-auto p-4" style="position: relative">
+  @if (windowWidth() > 1280) {
+    <img
+      [src]="currentStep() === 0 ? 'individual-step-one.svg' : 'individual-step-two.svg'"
+      style="
+        position: fixed;
+        bottom: -130px;
+        right: -120px;
+        width: 45%;
+        pointer-events: none;
+        z-index: 0;
+      "
+    />
+  }
+
+  <div class="row gy-3" style="position: relative; z-index: 1">
+    <div class="col-lg-7 col-12">
+      <div class="container-fixed overflow-x-hidden">
+        <div class="d-flex align-items-center gap-2 mb-4">
+          @for (step of steps; track step.index) {
+            <div class="d-flex align-items-center">
+              <div
+                class="rounded-circle d-flex align-items-center justify-content-center"
+                [class.bg-primary]="currentStep() >= step.index"
+                [class.bg-secondary]="currentStep() < step.index"
+                [class.text-white]="true"
+                style="width: 32px; height: 32px; font-weight: 600"
+              >
+                {{ step.index + 1 }}
+              </div>
+              <span
+                class="ms-2 fw-semibold"
+                [class.text-primary]="currentStep() >= step.index"
+                [class.text-muted]="currentStep() < step.index"
+              >
+                {{ step.label }}
+              </span>
+            </div>
+            @if (step.index < steps.length - 1) {
+              <div
+                class="flex-grow-1 mx-2"
+                style="height: 2px"
+                [class.bg-primary]="currentStep() > step.index"
+                [class.bg-secondary]="currentStep() <= step.index"
+              ></div>
+            }
+          }
+        </div>
+
+        @if (currentStep() === 0) {
+          <div [formGroup]="personalDetailsForm">
+            <h2>Personal Information</h2>
+            <hr class="col-8 mt-1" />
+
+            <div class="row mb-1 mt-3 g-3">
+              <div class="col-4">
+                <app-form-text-input label="First Name" formControlName="firstName">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input label="Father Name" formControlName="fatherName">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input label="Family Name" formControlName="familyName">
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-5 g-3">
+              <div class="col-4">
+                <app-form-text-input label="First Name (Arabic)" formControlName="firstNameAr">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input label="Father Name (Arabic)" formControlName="fatherNameAr">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input label="Family Name (Arabic)" formControlName="familyNameAr">
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-1 g-3">
+              <div class="col-4">
+                <!-- <app-form-text-input
+                  label="Phone Number"
+                  inputType="tel"
+                  formControlName="phoneNumber"
+                >
+                </app-form-text-input> -->
+
+                <app-phone-number-input-field
+                  label="Phone Number"
+                  formControlName="phoneNumber"
+                  [defaultCountry]="'PS'"
+                />
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input label="Fax Number" inputType="tel" formControlName="faxNumber">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input label="Gender" formControlName="gender" [options]="genders">
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-5 g-3">
+              <div class="col-4">
+                <app-form-text-input label="Passport ID" formControlName="passportId" [uppercase]="true">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  label="Date of Birth"
+                  formControlName="dateOfBirth"
+                  inputType="date"
+                  [max]="maxDateOfBirth"
+                >
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  label="Nationality"
+                  formControlName="nationality"
+                  [options]="countries"
+                >
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-3 g-3">
+              <div class="col-6">
+                <app-form-text-input label="Address" formControlName="address">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-6">
+                <app-form-text-input label="Address (Arabic)" formControlName="addressAr">
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-start justify-content-end">
+              <button
+                type="button"
+                (click)="nextStep()"
+                class="btn btn-primary bi bi-caret-right-fill fs-6"
+                style="min-width: 150px"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        } @else if (currentStep() === 1) {
+          <form [formGroup]="policyInfoForm" (ngSubmit)="onSavePolicy()">
+            <h2>Policy Information</h2>
+            <hr class="col-8 mt-1" />
+
+            <div class="row mb-1 mt-3 g-3">
+              <div class="col-4">
+                <app-form-text-input
+                  label="Departure From"
+                  formControlName="departureFrom"
+                  [options]="countries"
+                  [disabled]="departureFromSelectedOption !== ''"
+                >
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  label="Destination"
+                  formControlName="destination"
+                  [options]="countries"
+                  [disabled]="destinationSelectedOption !== ''"
+                >
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-5 g-3">
+              <div class="col-4">
+                <app-form-text-input
+                  label="Inception Date"
+                  formControlName="inceptionDate"
+                  inputType="date"
+                  [min]="today"
+                >
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input label="Period" formControlName="period" [options]="periods">
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  label="Expiry Date"
+                  formControlName="expiryDate"
+                  inputType="date"
+                  [readonly]="true"
+                  [disabled]="true"
+                >
+                </app-form-text-input>
+              </div>
+            </div>
+
+            <div class="row mb-3 g-3">
+              <div class="col-12">
+                <label>Optional Coverage</label>
+                <ul class="list-group mt-1">
+                  <li class="list-group-item">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="checkDefault"
+                        formControlName="tripCancellation"
+                      />
+                      <label class="form-check-label" for="checkDefault">
+                        Trip Cancellation Limit To 5000$ (Optional)
+                      </label>
+                    </div>
+                  </li>
+
+                  <li class="list-group-item">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="checkDefault"
+                        formControlName="winterSports"
+                      />
+                      <label class="form-check-label" for="checkDefault">
+                        Winter Ski / Summer Sports Extension (Optional)
+                      </label>
+                    </div>
+                  </li>
+
+                  <li class="list-group-item">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="checkDefault"
+                        formControlName="covid19"
+                      />
+                      <label class="form-check-label" for="checkDefault">
+                        COVID 19 up to 30000 Euro (Optional)
+                      </label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="row mb-3 g-3">
+              <div [hasRole]="[2]" class="col-4">
+                <app-form-text-input
+                  label="Payment Method"
+                  formControlName="paymentMethod"
+                  [options]="paymentMethods"
+                >
+                </app-form-text-input>
+              </div>
+
+              <div class="col-4">
+                <app-form-text-input
+                  [hasRole]="[1]"
+                  label="Account Number"
+                  formControlName="paymentAccountNumber"
+                  [options]="[{ code: userCashAccount, label: userCashAccount }]"
+                  [disabled]="true"
+                >
+                </app-form-text-input>
+
+                <app-form-text-input
+                  [hasRole]="[2]"
+                  label="Account Number"
+                  formControlName="paymentAccountNumber"
+                  [disabled]="true"
+                >
+                </app-form-text-input>
+              </div>
+            @if (policyInfoForm.get('paymentMethod')?.value === '2') {
+              <div class="col-4 d-flex align-items-center pt-3">
+                <button
+                  [hasRole]="[2]"
+                  (click)="goToAccountsTab()"
+                  class="btn btn-dark"
+                  type="button"
+                >
+                  Accounts
+                </button>
+              </div>
+            }
+            </div>
+
+            <div class="d-flex align-items-start gap-2">
+              @if (loadingPremium()) {
+                <div
+                  class="alert alert-primary d-flex flex-column align-items-center col-5 mb-0"
+                  role="alert"
+                  style="height: 118.8px"
+                >
+                  <app-logo-loading></app-logo-loading>
+                </div>
+              } @else {
+                <app-price [price]="premiumAmount"></app-price>
+              }
+
+              <button
+                type="button"
+                class="btn btn-outline-primary bi bi-caret-left-fill fs-6 pe-4 ms-auto"
+                style="min-width: 150px"
+                (click)="prevStep()"
+              >
+                Back
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-success bi bi-floppy2-fill fs-6"
+                style="min-width: 150px"
+              >
+                {{ isUpdateMode ? 'Update Policy' : 'Save Policy' }}
+              </button>
+            </div>
+          </form>
+        }
+      </div>
+    </div>
+
+    <div class="col-lg-5 col-12 gt-4">
+      <div class="alert alert-success" role="alert">
+        <strong>Calculate your premium in a single click..</strong><br />
+        Get instant results with our new calculator — no complicated forms or extra steps needed.<br /><br />
+        <a
+          (click)="this.appService.selectedTabIndex.set(7)"
+          class="btn btn-link m-0 p-0 text-primary fw-semibold"
+        >
+          Try it now →
+        </a>
+      </div>
+
+      <div class="card border-0">
+        <div class="card-body">
+          <app-files-download [data]="filesToDownload"></app-files-download>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

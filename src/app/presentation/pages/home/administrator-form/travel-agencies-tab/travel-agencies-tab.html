@@ -1,0 +1,207 @@
+<div class="d-flex flex-column p-3 h-100">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="mb-1">Travel Agencies Management</h2>
+      <small class="text-muted">Manage travel agency groups and offices</small>
+    </div>
+    <button type="button" class="btn btn-success" (click)="openAddAgencyModal()">
+      <i class="bi bi-plus-lg me-2"></i>Add New Agency
+    </button>
+  </div>
+
+  <div class="card d-flex flex-column flex-grow-1 overflow-hidden">
+    <div class="card-header bg-transparent flex-shrink-0">
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 d-flex align-items-center gap-2">
+          <i class="bi bi-briefcase text-primary"></i>
+          Agency Groups List
+        </h6>
+        <div style="width: 350px">
+          <app-form-text-input
+            label="Search by Code, Account Code or Name"
+            [formControl]="searchControl"
+          ></app-form-text-input>
+        </div>
+      </div>
+    </div>
+    <div class="card-body p-0 flex-grow-1 overflow-auto">
+      <table class="table table-hover mb-0">
+        <thead class="table-light sticky-top">
+          <tr>
+            <th class="text-center" style="width: 60px">Select</th>
+            <th>Code</th>
+            <th>Name (English)</th>
+            <th>Name (Arabic)</th>
+            <th>Account Code</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (agency of paginatedAgencies; track agency.agencyCode) {
+            <tr [class.table-active]="selectedAgencyCode === agency.agencyCode">
+              <td class="text-center">
+                <div class="form-check d-flex justify-content-center m-0">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="selectedAgency"
+                    [value]="agency.agencyCode"
+                    [checked]="selectedAgencyCode === agency.agencyCode"
+                    (change)="selectAgency(agency.agencyCode!)"
+                  />
+                </div>
+              </td>
+              <td class="font-monospace">{{ agency.agencyCode }}</td>
+              <td>{{ agency.agencyNameNative }}</td>
+              <td dir="rtl">{{ agency.agencyNameForiegn }}</td>
+              <td class="font-monospace">{{ agency.agencyAccountCode || '-' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="text-center text-muted py-4">
+                <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                No agencies available
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="d-flex gap-2 align-items-center px-3 py-2 border-top flex-shrink-0">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="openEditAgencyModal()"
+        [disabled]="selectedAgencyCode === null"
+      >
+        <i class="bi bi-pencil me-2"></i>Edit Agency
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        (click)="deleteAgency()"
+        [disabled]="selectedAgencyCode === null"
+      >
+        <i class="bi bi-trash me-2"></i>Delete Agency
+      </button>
+      <button
+        type="button"
+        class="btn btn-info text-white"
+        (click)="goToAgencyOffices()"
+        [disabled]="selectedAgencyCode === null"
+      >
+        <i class="bi bi-building me-2"></i>Agency Offices
+      </button>
+
+      @if (filteredAgencies().length > itemsPerPage) {
+        <small class="text-muted ms-auto">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
+          {{
+            currentPage * itemsPerPage > filteredAgencies().length
+              ? filteredAgencies().length
+              : currentPage * itemsPerPage
+          }}
+          of {{ filteredAgencies().length }}
+        </small>
+
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <button class="page-link" (click)="previousPage()" [disabled]="currentPage === 1">
+                <i class="bi bi-chevron-left"></i>
+              </button>
+            </li>
+
+            @for (page of pageNumbers; track page) {
+              <li class="page-item" [class.active]="currentPage === page">
+                <button class="page-link" (click)="goToPage(page)">
+                  {{ page }}
+                </button>
+              </li>
+            }
+
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <button
+                class="page-link"
+                (click)="nextPage()"
+                [disabled]="currentPage === totalPages"
+              >
+                <i class="bi bi-chevron-right"></i>
+              </button>
+            </li>
+          </ul>
+        </nav>
+      }
+    </div>
+  </div>
+</div>
+
+@if (showAgencyModal) {
+  <div
+    class="modal d-block"
+    tabindex="-1"
+    style="background-color: rgba(0, 0, 0, 0.5)"
+    (click)="closeModal()"
+  >
+    <div
+      class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="modal-content">
+        <div class="modal-header bg-primary bg-opacity-10">
+          <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-briefcase fs-4 text-primary"></i>
+            <h5 class="modal-title mb-0">
+              {{ isEditMode ? 'Edit Agency' : 'Add New Agency' }}
+            </h5>
+          </div>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+
+        <div class="modal-body">
+          <form [formGroup]="agencyForm">
+            <h6 class="text-primary fw-semibold mb-3">
+              <i class="bi bi-info-circle me-2"></i>Agency Information
+            </h6>
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <app-form-text-input
+                  label="Name (English)"
+                  formControlName="agencyNameNative"
+                ></app-form-text-input>
+              </div>
+              <div class="col-md-6">
+                <app-form-text-input
+                  label="Name (Arabic)"
+                  formControlName="agencyNameForiegn"
+                ></app-form-text-input>
+              </div>
+            </div>
+
+            <h6 class="text-primary fw-semibold mb-3">
+              <i class="bi bi-credit-card me-2"></i>Account Details
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <app-form-text-input
+                  label="Agency Account Code"
+                  formControlName="agencyAccountCode"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" (click)="closeModal()">
+            <i class="bi bi-x-lg me-1"></i>Cancel
+          </button>
+          <button type="button" class="btn btn-primary" (click)="saveAgency()">
+            <i class="bi bi-check-lg me-1"></i>
+            {{ isEditMode ? 'Update Agency' : 'Save Agency' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,93 @@
+<div class="container p-3">
+  @if (!policyToCancel) {
+    <div class="row">
+      <div class="d-flex flex-column pe-3 col-md-7">
+        <div class="mb-4">
+          <h2 class="mb-1">Cancel Policy</h2>
+          <small class="text-muted">Search and cancel travel insurance policies</small>
+        </div>
+
+        <form [formGroup]="searchForm" (ngSubmit)="onViewPolicy()" class="d-flex flex-column gap-4">
+          <div>
+            <hr class="mt-0 mb-3" />
+            <div class="row g-3">
+              <div class="col">
+                <app-form-text-input
+                  label="Policy Number"
+                  formControlName="policyNumber"
+                ></app-form-text-input>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary px-5" [disabled]="searchForm.invalid">
+            <i class="bi bi-search me-2"></i>View Policy
+          </button>
+        </form>
+      </div>
+
+      <div class="col-md-5">
+        <div class="alert alert-info mb-3">
+          <h6 class="alert-heading fw-bold mb-2">
+            <i class="bi bi-lightbulb-fill me-2"></i>Cancellation Guide
+          </h6>
+          <hr class="my-2" />
+          <p class="mb-2 small">Steps to cancel a policy:</p>
+          <ul class="small mb-0">
+            <li class="mb-1">
+              Select the <strong>Policy Type</strong> (Individual, Family, or Group)
+            </li>
+            <li class="mb-1">Enter the <strong>Policy Number</strong> to identify the policy</li>
+            <li class="mb-1">
+              For group policies, enter the <strong>Group Member Serial</strong> number
+            </li>
+            <li class="mb-1">
+              Click <strong>View Policy</strong> to review the policy details before cancellation
+            </li>
+          </ul>
+        </div>
+
+        <div class="alert alert-danger mb-0">
+          <h6 class="alert-heading fw-bold mb-2">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Warning
+          </h6>
+          <hr class="my-2" />
+          <p class="small mb-0">
+            Policy endorsement is <strong>permanent</strong> and cannot be undone. Please review the
+            policy details carefully before proceeding with endorsement.
+          </p>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="row">
+      <div class="col-12">
+        <div class="alert alert-danger mb-0">
+          <div class="d-flex align-items-start gap-3">
+            <div class="flex-shrink-0">
+              <i class="bi bi-exclamation-triangle-fill fs-3"></i>
+            </div>
+            <div class="flex-grow-1">
+              <h5 class="alert-heading fw-bold mb-2">Confirm Policy Endorsement</h5>
+              <p class="mb-3">
+                You are about to cancel this policy. This action is <strong>permanent</strong> and
+                cannot be undone. Please review the policy details below and confirm that you want
+                to proceed with the endorsement process.
+              </p>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-danger" (click)="onCancelPolicy()">
+                  <i class="bi bi-x-circle me-2"></i>Cancel Policy
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="clearPolicy()">
+                  <i class="bi bi-arrow-left me-2"></i>Go Back
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <app-policy-details></app-policy-details>
+      </div>
+    </div>
+  }
+</div>

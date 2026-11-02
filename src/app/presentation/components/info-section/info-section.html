@@ -1,0 +1,9 @@
+<div class="info-section" [class.highlight-section]="highlight">
+    <div class="section-header">
+        <div class="section-icon">
+            <img [src]="iconPath" [alt]="title + ' icon'" />
+        </div>
+        <h2 class="section-title">{{ title }}</h2>
+    </div>
+    <ng-content></ng-content>
+</div>

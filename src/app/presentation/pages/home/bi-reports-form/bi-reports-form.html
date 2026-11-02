@@ -1,0 +1,84 @@
+<div class="h-100 d-flex flex-column">
+  @if (!isLoaded()) {
+    <app-modern-trust-loading
+      class="flex-grow-1"
+      style="display: block"
+      [loadingFunc]="loadingFn"
+      [loadedFunc]="loadedFn"
+    ></app-modern-trust-loading>
+  } @else {
+    <div class="container-fluid py-3 px-3 h-100 d-flex flex-column overflow-auto">
+      <!-- ── Dashboard Header ──────────────────────────────────────────────────── -->
+      <div
+        class="card border-0 mb-3 flex-shrink-0"
+        style="background: linear-gradient(135deg, #7b1a1a 0%, #c0390a 55%, #e87a20 100%)"
+      >
+        <div class="card-body py-3 px-4">
+          <div class="d-flex align-items-center flex-wrap gap-2">
+            <div
+              class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 me-2"
+              style="background: rgba(255, 255, 255, 0.18); width: 52px; height: 52px"
+            >
+              <i class="bi bi-bar-chart-line-fill text-white fs-3"></i>
+            </div>
+            <div class="text-white flex-grow-1">
+              <h4 class="fw-bold mb-0">BI Analytics Dashboard</h4>
+              <p class="mb-0 small" style="opacity: 0.75">
+                Business Intelligence &amp; Performance Analytics
+              </p>
+            </div>
+            <span class="text-white small fw-semibold" style="opacity: 0.85">
+              Report for {{ currentYear }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── KPI Cards ──────────────────────────────────────────────────────────── -->
+      <div class="row g-3 mb-3 flex-shrink-0">
+        @for (kpi of kpiCards; track kpi.title; let i = $index) {
+          <div class="col-12 col-lg-6 col-xl-4 col-xxl-3">
+            <app-kpi-card
+              [title]="kpi.title"
+              [value]="kpi.value"
+              [change]="kpi.change"
+              [icon]="kpi.icon"
+              [up]="kpi.up"
+              [index]="i"
+            >
+            </app-kpi-card>
+          </div>
+        }
+      </div>
+
+      <!-- ── Row 1: Line Chart ──────────────────────────────────────────────────── -->
+      <div class="row g-3 mb-3">
+        <div class="col-12 col-lg-8">
+          <app-line-chart [config]="lineChartConfig"></app-line-chart>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <app-scatter-chart [config]="scatterChartConfig"></app-scatter-chart>
+        </div>
+      </div>
+
+      <!-- ── Row 2: Bar Chart + Donut Chart ────────────────────────────────────── -->
+      <div class="row g-3 mb-3">
+        <div class="col-12">
+          <app-bar-chart [config]="barChartConfig"></app-bar-chart>
+        </div>
+      </div>
+
+      <!-- ── Row 3: Scatter Chart + Heatmap ────────────────────────────────────── -->
+      <div class="row g-3 pb-3">
+        <div class="col-12 col-lg-6">
+          <app-heatmap-chart [config]="heatmapChartConfig"></app-heatmap-chart>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <app-donut-chart [config]="donutChartConfig"></app-donut-chart>
+        </div>
+      </div>
+    </div>
+  }
+</div>

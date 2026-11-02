@@ -1,0 +1,121 @@
+.info-section {
+    background: var(--surface-color, #ffffff);
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid var(--input-border, #e5e7eb);
+    transition: all 0.3s ease;
+    break-inside: avoid;
+    margin-bottom: 12px;
+    display: inline-block;
+    width: 100%;
+}
+
+.info-section:hover {
+    box-shadow: 0 4px 16px rgba(59, 61, 143, 0.08);
+    border-color: rgba(59, 61, 143, 0.2);
+}
+
+body.dark-theme .info-section:hover {
+    box-shadow: 0 4px 16px rgba(129, 140, 248, 0.12);
+    border-color: rgba(129, 140, 248, 0.25);
+}
+
+.info-section.highlight-section {
+    border: 2px solid rgba(59, 61, 143, 0.15);
+}
+
+body.light-theme .info-section.highlight-section {
+    background: linear-gradient(135deg, rgba(59, 61, 143, 0.03) 0%, rgba(123, 82, 219, 0.03) 100%);
+}
+
+body.dark-theme .info-section.highlight-section {
+    background: linear-gradient(135deg, rgba(129, 140, 248, 0.05) 0%, rgba(147, 112, 219, 0.05) 100%);
+    border-color: rgba(129, 140, 248, 0.2);
+}
+
+.info-section.highlight-section:hover {
+    box-shadow: 0 6px 20px rgba(59, 61, 143, 0.12);
+    border-color: rgba(59, 61, 143, 0.3);
+}
+
+body.dark-theme .info-section.highlight-section:hover {
+    box-shadow: 0 6px 20px rgba(129, 140, 248, 0.15);
+    border-color: rgba(129, 140, 248, 0.35);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    background: linear-gradient(to right, var(--input-border, #e5e7eb) 0%, transparent 100%) no-repeat bottom;
+    background-size: 100% 2px;
+    position: relative;
+}
+
+.section-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-color, #3b3d8f) 0%, var(--secondary-color, #7b52db) 100%);
+    border-radius: 8px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.section-icon img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+.section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-color, #1f2937);
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+    .info-section {
+        border-radius: 10px;
+        padding: 12px;
+    }
+
+    .section-header {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+
+    .section-icon {
+        width: 26px;
+        height: 26px;
+    }
+
+    .section-title {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-header {
+        gap: 8px;
+    }
+
+    .section-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .section-title {
+        font-size: 0.9rem;
+    }
+}

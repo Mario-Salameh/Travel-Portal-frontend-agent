@@ -1,0 +1,8 @@
+<small class="text-muted fw-semibold fs-6 d-block mb-2">Downloads</small>
+<div class="d-grid gap-2">
+  @for (file of data(); track $index) {
+    <a [href]="file.url" target="_blank" class="btn btn-light btn-sm text-start border">
+      <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>{{ file.label }}
+    </a>
+  }
+</div>

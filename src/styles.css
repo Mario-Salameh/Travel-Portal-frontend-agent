@@ -1,0 +1,221 @@
+:host {
+  --primary-color: #24599f;
+  --secondary-color: #95431f;
+  --tertiary-color: #3b82f6;
+  --surface-color: #ffffff;
+  --main-text-color: #1e3a8a;
+  --text-color: #1f2937;
+  --text-muted: #6b7280;
+  --shadow-color: rgba(30, 64, 175, 0.15);
+  --input-border: #e5e7eb;
+  --input-focus: #3b82f6;
+  --button-hover: #1e3a8a;
+  --policy-number-color: #1e40af;
+  --error-color: #ef4444;
+  --error-bg: #ffe8e8;
+  --accent-light: #eff6ff;
+}
+
+:host-context(.dark-theme) {
+  --primary-color: #3e6aa0;
+  --secondary-color: #b3692d;
+  --tertiary-color: #93c5fd;
+  --surface-color: #1f2937;
+  --main-text-color: #93c5fd;
+  --text-color: #f9fafb;
+  --text-muted: #d6d6d6;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --input-border: #374151;
+  --input-focus: #60a5fa;
+  --policy-number-color: #f9fafb;
+  --error-color: #fca5a5;
+  --error-bg: #603333;
+  --accent-light: #1e3a8a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.light-theme {
+  --bg-color: #f3f4f6;
+  --text-color: #1f2937;
+}
+
+body.dark-theme {
+  --bg-color: #111827;
+  --text-color: #f9fafb;
+}
+
+body {
+  background-color: var(--bg-color, #f3f4f6);
+  color: var(--text-color, #1f2937);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+  height: 100vh;
+  width: 100%;
+}
+
+dialog.logout-dialog {
+  width: min(500px, calc(100% - 2rem));
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+dialog.logout-dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.main-button {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.32)),
+    linear-gradient(140deg, var(--primary-color), var(--secondary-color));
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+}
+
+.main-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+}
+
+.main-button:active {
+  transform: translateY(0);
+}
+
+.btn-link {
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+
+  color: var(--text-color);
+  background-color: var(--surface-color);
+  border: 2px solid color-mix(in srgb, var(--secondary-color) 40%, black);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+body.light-theme .btn-link {
+  background-color: white;
+}
+
+body.dark-theme .btn-link {
+  background-color: var(--surface-color, #1f2937);
+  color: var(--text-color, #f9fafb);
+  border-color: color-mix(in srgb, var(--secondary-color) 65%, black);
+}
+
+.btn-link:hover {
+  transform: translateY(-2px);
+}
+
+body.light-theme .btn-link:hover {
+  box-shadow: 0 4px 15px rgba(30, 64, 175, 0.25);
+}
+
+body.dark-theme .btn-link:hover {
+  box-shadow: 0 4px 15px rgba(96, 165, 250, 0.3);
+  border-color: var(--input-focus, #60a5fa);
+}
+
+.btn-link:active {
+  transform: translateY(0);
+}
+
+.btn-link svg {
+  flex-shrink: 0;
+  transition: stroke 0.3s ease;
+}
+
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb {
+  background: #95999e;
+}
+
+body.dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: #787e88;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.bg-purple {
+  background-color: #6f42c1 !important;
+  color: #fff;
+}
+
+/* ============================================
+   DARK MODE GLOBAL ENHANCEMENTS
+   ============================================ */
+
+/* Form sections and cards in dark mode */
+body.dark-theme .form-section:hover,
+body.dark-theme .table-section:hover,
+body.dark-theme .info-section:hover {
+  box-shadow: 0 4px 16px rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.25);
+}
+
+/* Select dropdowns - handled in component CSS files */
+
+/* Date picker in dark mode */
+body.dark-theme .form-input[type='date']::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
