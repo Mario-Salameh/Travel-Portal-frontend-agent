@@ -11,7 +11,7 @@ import { CalculatePremiumRequestDto } from '../../models/calculate-premium-reque
 import { CalculatePremiumResponseDto } from '../../models/calculate-premium-response-dto';
 
 export interface PoliciesPremiumPost$Params {
-      manualDiscountPercent?: number;
+  manualDiscountPercent?: number;
       body: Array<CalculatePremiumRequestDto>
 }
 

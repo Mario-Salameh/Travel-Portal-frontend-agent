@@ -9,3 +9,4 @@ export type CreateGroupPolicyRequest = CreatePolicyRequest & {
 'policies': Array<GroupSubPolicy>;
 'manualDiscountPercent'?: number | null;
 };
+

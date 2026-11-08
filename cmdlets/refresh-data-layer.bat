@@ -1,7 +1,13 @@
 @echo off
+for %%I in ("%~dp0..") do set "PROJECT_ROOT=%%~fI"
+set "SWAGGER_FILE=%PROJECT_ROOT%\swagger.json"
+set "OUTPUT_DIR=%PROJECT_ROOT%\src\app\data"
+
 echo ========================================
 echo Refreshing Data Layer
 echo ========================================
+echo Project root: %PROJECT_ROOT%
+echo Generated code path: %OUTPUT_DIR%
 echo.
 
 echo Select source:
@@ -22,7 +28,7 @@ if "%choice%"=="1" (
 
 echo.
 echo Step 1: Downloading swagger.json from %BASE_URL%...
-curl -o swagger.json %BASE_URL%/swagger/v1/swagger.json
+curl -o "%SWAGGER_FILE%" "%BASE_URL%/swagger/v1/swagger.json"
 
 if %errorlevel% neq 0 (
     echo ERROR: Failed to download swagger.json
@@ -33,7 +39,7 @@ echo SUCCESS: swagger.json downloaded
 echo.
 
 echo Step 2: Generating data layer code...
-call ng-openapi-gen --input swagger.json --output src/app/data
+call ng-openapi-gen --input "%SWAGGER_FILE%" --output "%OUTPUT_DIR%"
 
 if %errorlevel% neq 0 (
     echo ERROR: Failed to generate data layer code
@@ -44,7 +50,7 @@ echo SUCCESS: Data layer code generated
 echo.
 
 echo Step 3: Cleaning up swagger.json...
-del swagger.json
+del "%SWAGGER_FILE%"
 
 if %errorlevel% neq 0 (
     echo WARNING: Failed to delete swagger.json
