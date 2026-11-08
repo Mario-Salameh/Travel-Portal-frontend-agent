@@ -4,7 +4,7 @@
 import { AgentViewSinglePolicy } from '../models/agent-view-single-policy';
 import { CustomerViewPolicy } from '../models/customer-view-policy';
 export type CustomerViewGroupPolicy = CustomerViewPolicy & {
-'policyNumber'?: string | null;
+'referenceKey'?: string | null;
 'startDate'?: string;
 'duration'?: number;
 'companyNameNative'?: string | null;

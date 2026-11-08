@@ -78,16 +78,16 @@
           </tr>
         </thead>
         <tbody>
-          @for (policy of paginatedGroupPolicies; track policy.policyNumber; let i = $index) {
+          @for (policy of paginatedGroupPolicies; track policy.referenceKey; let i = $index) {
             <tr [class.bg-light]="i % 2 !== 0">
               <td>{{ policy.issueDate }}</td>
               <td class="fw-medium">{{ policy.companyNameForeign || policy.companyNameNative }}</td>
               <td>
                 <button
                   class="btn btn-link px-2 p-0 fw-medium"
-                  (click)="onPolicyClick(policy.policyNumber!, 'group')"
+                  (click)="onPolicyClick(policy.referenceKey!, 'group')"
                 >
-                  {{ policy.policyNumber }}
+                  {{ policy.referenceKey }}
                 </button>
               </td>
               <td>{{ getPolicyTypeLabel(policy.planType) }}</td>
