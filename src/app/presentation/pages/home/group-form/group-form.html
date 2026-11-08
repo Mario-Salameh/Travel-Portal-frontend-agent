@@ -129,6 +129,56 @@
               </div>
             </div>
 
+            <div [formGroup]="policyInfoForm">
+              <h5 class="mt-4 mb-3">
+                <i class="bi bi-credit-card me-2"></i>Payment Information
+              </h5>
+
+              <div class="row mb-3 g-3">
+                <div [hasRole]="[2]" class="col-4">
+                  <app-form-text-input
+                    label="Payment Method"
+                    formControlName="paymentMethod"
+                    [options]="paymentMethods"
+                  >
+                  </app-form-text-input>
+                </div>
+
+                <div class="col-4">
+                  <app-form-text-input
+                    [hasRole]="[1]"
+                    label="Account Number"
+                    formControlName="paymentAccountNumber"
+                    [options]="[{ code: userCashAccount, label: userCashAccount }]"
+                    [disabled]="true"
+                  >
+                  </app-form-text-input>
+
+                  <app-form-text-input
+                    [hasRole]="[2]"
+                    label="Account Number"
+                    formControlName="paymentAccountNumber"
+                    [disabled]="true"
+                  >
+                  </app-form-text-input>
+                </div>
+
+                @if (policyInfoForm.get('paymentMethod')?.value === '1') {
+                  <div class="col-3 d-flex align-items-center pt-3">
+                    <button
+                      [hasRole]="[2]"
+                      (click)="goToAccountsTab()"
+                      class="btn btn-dark"
+                      type="button"
+                      [disabled]="loadingPremium()"
+                    >
+                      Accounts
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+
             <div class="d-flex align-items-start justify-content-end">
               <button
                 type="button"
@@ -234,52 +284,6 @@
                   </div>
                 }
               </div>
-            </div>
-
-            <!-- Payment Section -->
-            <h5 class="mt-4 mb-3"><i class="bi bi-credit-card me-2"></i>Payment Information</h5>
-
-            <div class="row mb-3 g-3">
-              <div [hasRole]="[2]" class="col-4">
-                <app-form-text-input
-                  label="Payment Method"
-                  formControlName="paymentMethod"
-                  [options]="paymentMethods"
-                >
-                </app-form-text-input>
-              </div>
-
-              <div class="col-4">
-                <app-form-text-input
-                  [hasRole]="[1]"
-                  label="Account Number"
-                  formControlName="paymentAccountNumber"
-                  [options]="[{ code: userCashAccount, label: userCashAccount }]"
-                  [disabled]="true"
-                >
-                </app-form-text-input>
-
-                <app-form-text-input
-                  [hasRole]="[2]"
-                  label="Account Number"
-                  formControlName="paymentAccountNumber"
-                  [disabled]="true"
-                >
-                </app-form-text-input>
-              </div>
- @if (policyInfoForm.get('paymentMethod')?.value === '1') {
-              <div class="col-3 d-flex align-items-center pt-3" >
-                <button
-                  [hasRole]="[2]"
-                  (click)="goToAccountsTab()"
-                  class="btn btn-dark"
-                  type="button"
-                  [disabled]="loadingPremium()"
-                >
-                  Accounts
-                </button>
-              </div>
-}
             </div>
 
             <!-- Premium Summary & Actions -->
