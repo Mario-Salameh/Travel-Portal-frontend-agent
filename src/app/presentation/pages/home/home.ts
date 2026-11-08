@@ -52,9 +52,7 @@ export class Home {
     { icon: 'search', label: 'Inquiry' },
     { icon: 'chart', label: 'Reports' },
     { icon: 'admin', label: 'Administrator', roles: [2, 3] },
-    { icon: 'calculator', label: 'Premium Calculator' },
-    { icon: 'chart', label: 'BI Reports' },
-    { icon: 'ai', label: 'Trust AI' }
+    { icon: 'calculator', label: 'Premium Calculator' }
   ];
 
   async ngOnInit() {
