@@ -220,6 +220,14 @@ export class CompanyOfficesTab {
   async deleteOffice(): Promise<void> {
     if (!this.selectedOfficeId) return;
 
+    const confirmed = await this.dialogService.confirm({
+      title: 'Delete company office?',
+      message: `Office ${this.selectedOfficeId} will be permanently deleted.`,
+      confirmText: 'Delete office',
+      tone: 'danger',
+    });
+    if (!confirmed) return;
+
     this.appService.isLoading.set('Deleting office...');
 
     try {

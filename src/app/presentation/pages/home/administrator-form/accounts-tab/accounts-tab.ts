@@ -222,6 +222,14 @@ export class AccountsTab {
   async deleteAccount(): Promise<void> {
     if (!this.selectedAccountCode) return;
 
+    const confirmed = await this.dialogService.confirm({
+      title: 'Delete account?',
+      message: `Account ${this.selectedAccountCode} will be permanently deleted.`,
+      confirmText: 'Delete account',
+      tone: 'danger',
+    });
+    if (!confirmed) return;
+
     this.appService.isLoading.set('Deleting account...');
 
     try {

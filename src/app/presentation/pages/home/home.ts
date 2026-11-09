@@ -37,7 +37,8 @@ interface NavItem {
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, LogoLoading, IndividualForm, AdministratorForm, PolicyDetails, InquiryForm, InquiryResultsForm, CurrencyRatesTab, GroupForm, ExportTravelDataTab, CancelPolicyTab, AccountsTab, CompanyOfficesTab, TravelAgenciesTab, TravelPricesTab, UsersTab, AgencyCommissionsTab, ReportsForm, PremiumCalculatorForm, HasRoleDirective, BiReportsForm, AiForm],
-  templateUrl: './home.html'
+  templateUrl: './home.html',
+  styleUrl: './home.css'
 })
 export class Home {
   router = inject(Router);
@@ -65,6 +66,7 @@ export class Home {
 
   dialogService = inject(DialogService);
   showLogoutConfirmation = false;
+  mobileNavOpen = false;
 
   constructor() {
     if (!this.authRepository.isAuthenticated)
@@ -73,6 +75,15 @@ export class Home {
 
   selectNavItem(index: number): void {
     this.appService.selectedTabIndex.set(index);
+    this.closeMobileNav();
+  }
+
+  toggleMobileNav(): void {
+    this.mobileNavOpen = !this.mobileNavOpen;
+  }
+
+  closeMobileNav(): void {
+    this.mobileNavOpen = false;
   }
 
   goToAdministratorTab(tabIndex: number): void {
@@ -92,6 +103,7 @@ export class Home {
     if (this.showLogoutConfirmation) {
       this.closeLogoutConfirmation();
     }
+    this.closeMobileNav();
   }
 
   logout(): void {

@@ -192,6 +192,14 @@ export class AgencyCommissionsTab {
   async deleteCommission(): Promise<void> {
     if (!this.selectedBrokerCode) return;
 
+    const confirmed = await this.dialogService.confirm({
+      title: 'Delete agency commission?',
+      message: `Commission for broker ${this.selectedBrokerCode} will be permanently deleted.`,
+      confirmText: 'Delete commission',
+      tone: 'danger',
+    });
+    if (!confirmed) return;
+
     this.appService.isLoading.set('Deleting commission...');
 
     try {
