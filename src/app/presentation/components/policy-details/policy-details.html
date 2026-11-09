@@ -1,4 +1,4 @@
-<div class="container py-4 overflow-y-auto" style="height: 100%">
+<div class="responsive-page container py-4 overflow-y-auto" style="height: 100%">
   <div class="row gy-3">
     <div class="col-xl-8 col-12">
       <div
@@ -172,10 +172,10 @@
               </div>
             </div>
 
-            <div class="row px-3">
+            <div class="coverage-summary">
               @for (entry of optionalParameters(); track entry[0]) {
-                <div class="col-4 bg-light p-3 d-flex align-items-center justify-content-center">
-                  <small class="text-muted me-2">{{ entry[0] }}</small>
+                <div class="coverage-summary__item">
+                  <small class="text-muted">{{ entry[0] }}</small>
                   <span class="badge" [ngClass]="entry[1] ? 'bg-success' : 'bg-secondary'">
                     {{ entry[1] ? 'Yes' : 'No' }}
                   </span>

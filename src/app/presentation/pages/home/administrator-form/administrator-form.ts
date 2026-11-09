@@ -20,20 +20,34 @@ export class AdministratorForm {
   }
 
   async deleteDraftPolicies(): Promise<void> {
-    if (confirm("Are you sure you want to delete draft policies up to yesterday?")) {
-      await this.policyRespository.deleteDraftPolicies();
+    const confirmed = await this.dialogService.confirm({
+      title: 'Delete draft policies?',
+      message: 'This will permanently delete all draft policies created up to yesterday.',
+      confirmText: 'Delete drafts',
+      tone: 'danger',
+    });
 
-      this.dialogService.openDialog("Draft policies (up to yesterday) deleted successfully!", "success")
-    }
+    if (!confirmed) return;
+
+    await this.policyRespository.deleteDraftPolicies();
+    this.dialogService.openDialog('Draft policies (up to yesterday) deleted successfully!', 'success');
   }
 
   async exportCurrentInsuredClients(): Promise<void> {
-    if (confirm("Are you sure you want to export current insured clients?\n(Based on Inception and Expiry dates)")) {
+    const confirmed = await this.dialogService.confirm({
+      title: 'Export current insured clients?',
+      message: 'The report will be generated using policy inception and expiry dates.',
+      confirmText: 'Export report',
+      tone: 'primary',
+    });
 
-      this.appService.isLoading.set("Building Current Insured Clients Report...")
+    if (!confirmed) return;
 
+    this.appService.isLoading.set('Building Current Insured Clients Report...');
+    try {
       await this.policyRespository.exportCurrentInsuredClients();
-      this.appService.isLoading.set(null)
+    } finally {
+      this.appService.isLoading.set(null);
     }
   }
 }

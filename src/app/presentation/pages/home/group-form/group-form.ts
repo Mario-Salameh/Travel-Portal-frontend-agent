@@ -1,4 +1,4 @@
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
+import { Component, ElementRef, HostListener, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
@@ -40,6 +40,7 @@ export class GroupForm implements OnInit {
   appService = inject(AppService);
   fb = inject(FormBuilder);
   policyRepository = inject(PolicyRepository);
+  private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
 
   companyInfoForm!: FormGroup;
   policyInfoForm!: FormGroup;
@@ -186,7 +187,16 @@ export class GroupForm implements OnInit {
 
     if (this.currentStep() < this.steps.length - 1) {
       this.currentStep.set(this.currentStep() + 1);
+      this.scrollCurrentStepToTop();
     }
+  }
+
+  private scrollCurrentStepToTop(): void {
+    requestAnimationFrame(() => {
+      const host = this.elementRef.nativeElement;
+      host.querySelector<HTMLElement>('.responsive-form-page')?.scrollTo({ top: 0 });
+      host.closest<HTMLElement>('.portal-content')?.scrollTo({ top: 0 });
+    });
   }
 
   prevStep() {
@@ -504,14 +514,21 @@ calculateAge(birthDate: string): number | string {
     this.memberToEdit.set(undefined);
   }
 
-  deleteMember(index: number): void {
+  async deleteMember(index: number): Promise<void> {
     const member = this.members[index];
     const memberName = `${member.firstNameNative} ${member.lastNameNative}`;
 
-    if (confirm(`Are you sure you want to delete ${memberName}?`)) {
-      this.members.splice(index, 1);
-      this.dialogService.openDialog('Member deleted successfully!', 'success');
-    }
+    const confirmed = await this.dialogService.confirm({
+      title: 'Delete group member?',
+      message: `${memberName} will be removed from this group policy.`,
+      confirmText: 'Delete member',
+      tone: 'danger',
+    });
+
+    if (!confirmed) return;
+
+    this.members.splice(index, 1);
+    this.dialogService.openDialog('Member deleted successfully!', 'success');
 
     this.showPremium();
   }

@@ -1,5 +1,5 @@
-<div class="d-flex flex-column p-3 h-100">
-  <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="responsive-page admin-page d-flex flex-column p-3 h-100">
+  <div class="admin-page-header d-flex justify-content-between align-items-center mb-4">
     <div>
       <h2 class="mb-1">Agency Commissions Management</h2>
       <small class="text-muted">Manage agency commission rates and details</small>
@@ -11,12 +11,12 @@
 
   <div class="card d-flex flex-column flex-grow-1 overflow-hidden">
     <div class="card-header bg-transparent flex-shrink-0">
-      <div class="d-flex justify-content-between align-items-center">
+      <div class="admin-card-header d-flex justify-content-between align-items-center">
         <h6 class="mb-0 d-flex align-items-center gap-2">
           <i class="bi bi-list-ul text-primary"></i>
           Commissions List
         </h6>
-        <div style="width: 250px">
+        <div class="admin-filter" style="width: 250px">
           <app-form-text-input
             label="Search by Broker Code"
             [formControl]="searchControl"
@@ -65,22 +65,26 @@
       </table>
     </div>
 
-    <div class="d-flex gap-2 align-items-center px-3 py-2 border-top flex-shrink-0">
+    <div class="admin-action-bar d-flex gap-2 align-items-center px-3 py-2 flex-shrink-0">
       <button
         type="button"
-        class="btn btn-primary"
+        class="admin-icon-button btn btn-primary"
+        title="Edit Commission"
+        aria-label="Edit Commission"
         (click)="openEditCommissionModal()"
         [disabled]="selectedBrokerCode === null"
       >
-        <i class="bi bi-pencil me-2"></i>Edit Commission
+        <i class="bi bi-pencil"></i>
       </button>
       <button
         type="button"
-        class="btn btn-danger"
+        class="admin-icon-button btn btn-danger"
+        title="Delete Commission"
+        aria-label="Delete Commission"
         (click)="deleteCommission()"
         [disabled]="selectedBrokerCode === null"
       >
-        <i class="bi bi-trash me-2"></i>Delete Commission
+        <i class="bi bi-trash"></i>
       </button>
 
       @if (filteredCommissions().length > itemsPerPage) {

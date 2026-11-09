@@ -317,6 +317,14 @@ export class UsersTab {
   async deleteUser(): Promise<void> {
     if (!this.selectedUserCode) return;
 
+    const confirmed = await this.dialogService.confirm({
+      title: 'Delete user?',
+      message: `User ${this.selectedUserCode} will be permanently deleted.`,
+      confirmText: 'Delete user',
+      tone: 'danger',
+    });
+    if (!confirmed) return;
+
     this.appService.isLoading.set('Deleting user...');
 
     try {

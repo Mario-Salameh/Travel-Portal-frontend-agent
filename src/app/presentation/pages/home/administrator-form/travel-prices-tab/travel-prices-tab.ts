@@ -245,6 +245,16 @@ export class TravelPricesTab {
   }
 
   async deleteTravelPriceRecord(): Promise<void> {
+    if (!this.selectedPrice) return;
+
+    const confirmed = await this.dialogService.confirm({
+      title: 'Delete travel price?',
+      message: 'The selected travel pricing record will be permanently deleted.',
+      confirmText: 'Delete price',
+      tone: 'danger',
+    });
+    if (!confirmed) return;
+
     this.appService.isLoading.set('Deleting travel price...');
 
     try {

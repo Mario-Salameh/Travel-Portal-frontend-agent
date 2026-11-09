@@ -209,6 +209,14 @@ export class TravelAgenciesTab {
   async deleteAgency(): Promise<void> {
     if (this.selectedAgencyCode === null) return;
 
+    const confirmed = await this.dialogService.confirm({
+      title: 'Delete travel agency?',
+      message: `Agency ${this.selectedAgencyCode} will be permanently deleted.`,
+      confirmText: 'Delete agency',
+      tone: 'danger',
+    });
+    if (!confirmed) return;
+
     this.appService.isLoading.set('Deleting agency...');
 
     try {
