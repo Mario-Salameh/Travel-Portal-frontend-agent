@@ -70,6 +70,7 @@
     border-bottom: 1px solid #dee2e6;
     box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
     z-index: 1020;
+    position: sticky;
   }
 
   .portal-menu-button {
