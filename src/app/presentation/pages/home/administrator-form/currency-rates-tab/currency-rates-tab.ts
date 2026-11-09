@@ -60,6 +60,14 @@ export class CurrencyRatesTab {
 
   async deleteCurrencyRate(): Promise<void> {
     if (this.selectedRateId !== null) {
+      const confirmed = await this.dialogService.confirm({
+        title: 'Delete currency rate?',
+        message: 'The selected currency rate will be permanently deleted.',
+        confirmText: 'Delete rate',
+        tone: 'danger',
+      });
+      if (!confirmed) return;
+
       this.appService.isLoading.set("Deleting currency rate...");
       try {
         await this.currencyRateRepository.deleteCurrencyRate(this.selectedRateId);

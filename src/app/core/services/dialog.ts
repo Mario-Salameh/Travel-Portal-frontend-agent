@@ -16,15 +16,58 @@ export interface ToastData {
     messageType: MessageType;
 }
 
+export type ConfirmationTone = 'danger' | 'primary';
+
+export interface ConfirmationOptions {
+    title: string;
+    message: string;
+    confirmText?: string;
+    cancelText?: string;
+    tone?: ConfirmationTone;
+}
+
+export interface ConfirmationData extends ConfirmationOptions {
+    confirmText: string;
+    cancelText: string;
+    tone: ConfirmationTone;
+}
+
 @Injectable({ providedIn: 'root' })
 export class DialogService {
     private toasts$ = new BehaviorSubject<ToastData[]>([]);
+    private confirmation$ = new BehaviorSubject<ConfirmationData | null>(null);
+    private confirmationResolver?: (confirmed: boolean) => void;
     private id = 0;
     private timers = new Map<number, ReturnType<typeof setTimeout>>();
     private duration = 3000;
 
     getToasts() {
         return this.toasts$.asObservable();
+    }
+
+    getConfirmation() {
+        return this.confirmation$.asObservable();
+    }
+
+    confirm(options: ConfirmationOptions): Promise<boolean> {
+        this.confirmationResolver?.(false);
+
+        this.confirmation$.next({
+            ...options,
+            confirmText: options.confirmText ?? 'Confirm',
+            cancelText: options.cancelText ?? 'Cancel',
+            tone: options.tone ?? 'primary',
+        });
+
+        return new Promise<boolean>((resolve) => {
+            this.confirmationResolver = resolve;
+        });
+    }
+
+    resolveConfirmation(confirmed: boolean): void {
+        this.confirmationResolver?.(confirmed);
+        this.confirmationResolver = undefined;
+        this.confirmation$.next(null);
     }
 
     openDialog(message: string, type: MessageType = 'info') {

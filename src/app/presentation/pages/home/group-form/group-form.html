@@ -1,4 +1,4 @@
-<div class="container overflow-y-auto p-4" style="position: relative">
+<div class="responsive-page responsive-form-page container overflow-y-auto p-4" style="position: relative">
   @if (windowWidth() > 1280) {
     <img
       [src]="currentStep() === 0 ? 'individual-step-one.svg' : 'individual-step-two.svg'"
@@ -16,7 +16,7 @@
   <div class="row gy-3 mb-3" style="position: relative; z-index: 1">
     <div class="col-lg-8 col-12">
       <div class="container-fixed overflow-x-hidden">
-        <div class="d-flex align-items-center gap-2 mb-4">
+        <div class="form-stepper d-flex align-items-center gap-2 mb-4">
           @for (step of steps; track step.index) {
             <div class="d-flex align-items-center">
               <div
@@ -197,7 +197,7 @@
 
             <div class="card border mb-3 mt-3">
               <div
-                class="card-header bg-primary bg-opacity-10 d-flex justify-content-between align-items-center py-3"
+                class="members-card-header card-header bg-primary bg-opacity-10 d-flex justify-content-between align-items-center py-3"
               >
                 <div class="d-flex align-items-center gap-2">
                   <i class="bi bi-people-fill fs-5 text-primary"></i>

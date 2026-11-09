@@ -1,21 +1,20 @@
-<div class="d-flex justify-content-center align-items-center overflow-hidden"
-    style="height: 100vh; background-color: #FEFEFE;">
-    <form class="d-flex flex-column align-items-center justify-content-center" style="min-width: 500px; height: 700px;"
+<div class="login-page d-flex justify-content-center align-items-center overflow-hidden">
+    <form class="login-form d-flex flex-column align-items-center justify-content-center"
         [formGroup]="loginForm" (ngSubmit)="onLogin()">
 
-        <img src="trust-logo.png" class="d-block mx-auto mb-3" style="height: 90px;">
+        <img src="trust-logo.png" class="d-block mx-auto mb-3" style="height: 90px;" alt="Trust logo">
         <h1 class="text-center"> Travel Inurance System</h1>
         <h5 class="mb-5 text-center"> CO - Palestine </h5>
 
-        <div class="mb-2">
+        <div class="login-field mb-2">
             <label for="exampleInputEmail1" class="form-label">Username</label>
-            <input type="text" style="width: 300px;" class="form-control" id="exampleInputEmail1"
+            <input type="text" class="form-control" id="exampleInputEmail1"
                 aria-describedby="emailHelp" formControlName="username">
         </div>
 
-        <div class="mb-4">
+        <div class="login-field mb-4">
             <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" style="width: 300px;" class="form-control" id="exampleInputPassword1"
+            <input type="password" class="form-control" id="exampleInputPassword1"
                 formControlName="password">
         </div>
 
@@ -28,5 +27,5 @@
         </div>
     </form>
 
-    <img src="login-screen-background.png" class="d-none d-lg-inline" style="width: 500px;">
+    <img src="login-screen-background.png" class="login-illustration d-none d-lg-inline" alt="Travel insurance illustration">
 </div>

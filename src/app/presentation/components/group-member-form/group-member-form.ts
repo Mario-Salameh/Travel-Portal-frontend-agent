@@ -13,6 +13,7 @@ import { DialogService } from '../../../core/services/dialog';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, FormTextInput, PhoneNumberInputField],
   templateUrl: './group-member-form.html',
+  styleUrl: './group-member-form.css',
 })
 
 export class GroupMemberForm implements OnInit {

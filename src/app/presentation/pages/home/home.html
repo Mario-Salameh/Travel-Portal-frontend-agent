@@ -1,5 +1,8 @@
-<div class="d-flex bg-light h-100">
-  <div class="d-flex flex-column flex-shrink-0 pe-2 border-end" style="width: 260px">
+<div class="portal-shell d-flex bg-light h-100">
+  <aside
+    class="portal-sidebar d-flex flex-column flex-shrink-0 pe-2 border-end"
+    [class.portal-sidebar--open]="mobileNavOpen"
+  >
     <div class="d-flex flex-column align-items-center mt-3">
       <img style="width: 70px" src="trust-logo.png" alt="Trust Logo" class="mb-1" />
       <label class="fs-5 fw-medium">Trust Insurance System</label>
@@ -118,9 +121,35 @@
         </div>
       </div>
     }
-  </div>
+  </aside>
 
-  <div class="flex-grow-1 overflow-y-auto m-1">
+  @if (mobileNavOpen) {
+    <button
+      type="button"
+      class="portal-backdrop"
+      aria-label="Close navigation menu"
+      (click)="closeMobileNav()"
+    ></button>
+  }
+
+  <div class="portal-main flex-grow-1">
+    <header class="portal-mobile-header">
+      <button
+        type="button"
+        class="portal-menu-button"
+        aria-label="Open navigation menu"
+        [attr.aria-expanded]="mobileNavOpen"
+        (click)="toggleMobileNav()"
+      >
+        <i class="bi bi-list"></i>
+      </button>
+      <div class="portal-mobile-brand">
+        <img src="trust-logo.png" alt="Trust logo" />
+        <span>Trust Insurance</span>
+      </div>
+    </header>
+
+    <main class="portal-content overflow-y-auto">
     @switch (this.appService.selectedTabIndex()) {
       @case (0) {
         <app-individual-form></app-individual-form>
@@ -196,5 +225,6 @@
         <app-logo-loading></app-logo-loading>
       }
     }
+    </main>
   </div>
 </div>

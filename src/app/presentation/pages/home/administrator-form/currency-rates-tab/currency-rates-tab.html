@@ -137,14 +137,16 @@
               </table>
             </div>
           </div>
-          <div class="card-footer bg-transparent">
+          <div class="admin-action-bar card-footer bg-transparent">
             <button
               type="button"
-              class="btn btn-danger"
+              class="admin-icon-button btn btn-danger"
+              title="Delete Selected Rate"
+              aria-label="Delete Selected Rate"
               (click)="deleteCurrencyRate()"
               [disabled]="selectedRateId === null"
             >
-              <i class="bi bi-trash me-2"></i>Delete Selected
+              <i class="bi bi-trash"></i>
             </button>
           </div>
         </div>

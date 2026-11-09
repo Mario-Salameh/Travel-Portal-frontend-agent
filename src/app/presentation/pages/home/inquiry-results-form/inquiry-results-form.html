@@ -1,13 +1,13 @@
-<div class="p-3 d-flex flex-column h-100">
+<div class="responsive-page responsive-results-page p-3 d-flex flex-column h-100">
   <div
-    class="d-flex justify-content-between align-items-center mb-2 p-3 rounded-3 text-white"
+    class="results-header d-flex justify-content-between align-items-center mb-2 p-3 rounded-3 text-white"
     style="background: linear-gradient(135deg, #722525 0%, #d35c2b 100%)"
   >
     <div>
       <h2 class="mb-1 fw-bold">Policy Search Results</h2>
       <small class="opacity-75">Found {{ totalPolicies }} policies matching your search</small>
     </div>
-    <div class="d-flex align-items-center gap-3 bg-white bg-opacity-25 rounded-3 px-4 py-2">
+    <div class="results-total d-flex align-items-center gap-3 bg-white bg-opacity-25 rounded-3 px-4 py-2">
       <i class="bi bi-file-earmark-text fs-3"></i>
       <div class="d-flex flex-column">
         <span class="fw-bold fs-4">{{ totalPolicies }}</span>
@@ -17,7 +17,7 @@
   </div>
 
   <!-- Table -->
-  <div class="flex-grow-1 overflow-auto mb-2 border rounded">
+  <div class="results-table flex-grow-1 overflow-auto mb-2 border rounded">
     @if (!isGroupPolicy) {
       <!-- Single Policy Table -->
       <table class="table table-striped table-hover table-borderless align-middle mb-0">
@@ -106,7 +106,7 @@
   </div>
 
   <!-- Pagination -->
-  <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+  <div class="results-pagination d-flex justify-content-between align-items-center pt-3 border-top">
     <small class="text-muted">
       Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
       {{ currentPage * itemsPerPage > totalPolicies ? totalPolicies : currentPage * itemsPerPage }}

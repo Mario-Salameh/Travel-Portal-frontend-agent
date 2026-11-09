@@ -1,15 +1,15 @@
 <div
-  class="modal d-block"
+  class="member-modal-backdrop modal d-block"
   tabindex="-1"
   style="background-color: rgba(0, 0, 0, 0.5)"
   (click)="cancel()"
 >
   <div
-    class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+    class="member-modal-dialog modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
     (click)="$event.stopPropagation()"
   >
-    <div class="modal-content">
-      <div class="modal-header bg-primary bg-opacity-10">
+    <div class="member-modal-content modal-content">
+      <div class="member-modal-header modal-header">
         <div class="d-flex align-items-center gap-2">
           <i class="bi bi-person-fill fs-4 text-primary"></i>
           <h5 class="modal-title mb-0">
@@ -19,24 +19,24 @@
         <button type="button" class="btn-close" (click)="cancel()"></button>
       </div>
 
-      <div class="modal-body">
+      <div class="member-modal-body modal-body">
         <form [formGroup]="memberForm">
           <!-- Personal Information (English) -->
-          <h6 class="text-primary fw-semibold mb-3">
+          <h6 class="member-section-title text-primary fw-semibold mb-3">
             <i class="bi bi-person me-2"></i>Personal Information (English)
           </h6>
           <div class="row g-3 mb-4">
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <app-form-text-input label="First Name" formControlName="firstNameNative">
               </app-form-text-input>
             </div>
 
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <app-form-text-input label="Father Name" formControlName="fatherNameNative">
               </app-form-text-input>
             </div>
 
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <app-form-text-input label="Family Name" formControlName="lastNameNative">
               </app-form-text-input>
             </div>
@@ -74,7 +74,7 @@
           </div> -->
           <!-- Arabic Information Toggle -->
           <div
-            class="d-flex align-items-center justify-content-between border-top border-bottom py-3 mb-3"
+            class="member-arabic-toggle d-flex align-items-center justify-content-between py-3 mb-3"
           >
             <div class="d-flex align-items-center gap-2">
               <i class="bi bi-translate text-primary"></i>
@@ -100,21 +100,21 @@
           <!-- Arabic Fields -->
           <div class="collapse" [class.show]="showArabicFields">
             <div class="row g-3 mb-4">
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <app-form-text-input
                   label="First Name (Arabic)"
                   formControlName="firstNameForeign"
                 />
               </div>
 
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <app-form-text-input
                   label="Father Name (Arabic)"
                   formControlName="fatherNameForeign"
                 />
               </div>
 
-              <div class="col-4">
+              <div class="col-12 col-md-4">
                 <app-form-text-input
                   label="Family Name (Arabic)"
                   formControlName="lastNameForeign"
@@ -128,11 +128,11 @@
           </div>
 
           <!-- Contact & Identity -->
-          <h6 class="text-primary fw-semibold mb-3">
+          <h6 class="member-section-title text-primary fw-semibold mb-3">
             <i class="bi bi-card-text me-2"></i>Contact & Identity
           </h6>
           <div class="row g-3 mb-4">
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <!-- <app-form-text-input
                 label="Phone Number"
                 inputType="tel"
@@ -147,12 +147,12 @@
               />
             </div>
 
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <app-form-text-input label="Fax Number" inputType="tel" formControlName="fax">
               </app-form-text-input>
             </div>
 
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <app-form-text-input
                 label="Passport ID"
                 formControlName="passportNumber"
@@ -161,7 +161,7 @@
               </app-form-text-input>
             </div>
 
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <app-form-text-input
                 label="Date of Birth"
                 inputType="date"
@@ -171,7 +171,7 @@
               </app-form-text-input>
             </div>
 
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <app-form-text-input
                 label="Nationality"
                 formControlName="nationalityCountryCode"
@@ -180,7 +180,7 @@
               </app-form-text-input>
             </div>
 
-            <div class="col-4">
+            <div class="col-12 col-md-4">
               <app-form-text-input
                 label="Gender"
                 formControlName="passengerGender"
@@ -191,52 +191,52 @@
           </div>
 
           <!-- Coverage Add-ons -->
-          <h6 class="text-primary fw-semibold mb-3">
+          <h6 class="member-section-title text-primary fw-semibold mb-3">
             <i class="bi bi-shield-check me-2"></i>Coverage Add-ons (Optional)
           </h6>
           <div class="row g-2">
             <div class="col-12">
-              <ul class="list-group">
+              <ul class="coverage-list list-group">
                 <li class="list-group-item">
-                  <div class="form-check">
+                  <label class="coverage-option" for="groupTripCancellation">
                     <input
-                      class="form-check-input"
+                      class="form-check-input mt-0"
                       type="checkbox"
-                      id="tripCancellation"
+                      id="groupTripCancellation"
                       formControlName="tripCancellationFlag"
                     />
-                    <label class="form-check-label" for="tripCancellation">
+                    <span>
                       Trip Cancellation Limit To 5000$ (Optional)
-                    </label>
-                  </div>
+                    </span>
+                  </label>
                 </li>
 
                 <li class="list-group-item">
-                  <div class="form-check">
+                  <label class="coverage-option" for="groupWinterSki">
                     <input
-                      class="form-check-input"
+                      class="form-check-input mt-0"
                       type="checkbox"
-                      id="winterSki"
+                      id="groupWinterSki"
                       formControlName="winterSkiFlag"
                     />
-                    <label class="form-check-label" for="winterSki">
+                    <span>
                       Winter Ski / Summer Sports Extension (Optional)
-                    </label>
-                  </div>
+                    </span>
+                  </label>
                 </li>
 
                 <li class="list-group-item">
-                  <div class="form-check">
+                  <label class="coverage-option" for="groupCovid">
                     <input
-                      class="form-check-input"
+                      class="form-check-input mt-0"
                       type="checkbox"
-                      id="covid"
+                      id="groupCovid"
                       formControlName="covidFlag"
                     />
-                    <label class="form-check-label" for="covid">
+                    <span>
                       COVID 19 up to 30000 Euro (Optional)
-                    </label>
-                  </div>
+                    </span>
+                  </label>
                 </li>
               </ul>
             </div>
@@ -244,11 +244,11 @@
         </form>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" (click)="cancel()">
+      <div class="member-modal-footer modal-footer">
+        <button type="button" class="member-action-button btn btn-outline-secondary" (click)="cancel()">
           <i class="bi bi-x-lg me-1"></i> Cancel
         </button>
-        <button type="button" class="btn btn-primary" (click)="saveMember()">
+        <button type="button" class="member-action-button btn btn-primary" (click)="saveMember()">
           <i class="bi bi-check-lg me-1"></i>
           {{ memberIndex !== undefined ? 'Update Member' : 'Add Member' }}
         </button>

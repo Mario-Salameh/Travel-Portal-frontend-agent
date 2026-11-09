@@ -1,4 +1,4 @@
-<div class="container overflow-y-auto p-4" style="position: relative">
+<div class="responsive-page responsive-form-page container overflow-y-auto p-4" style="position: relative">
   @if (windowWidth() > 1280) {
     <img
       [src]="currentStep() === 0 ? 'individual-step-one.svg' : 'individual-step-two.svg'"
@@ -16,7 +16,7 @@
   <div class="row gy-3" style="position: relative; z-index: 1">
     <div class="col-lg-7 col-12">
       <div class="container-fixed overflow-x-hidden">
-        <div class="d-flex align-items-center gap-2 mb-4">
+        <div class="form-stepper d-flex align-items-center gap-2 mb-4">
           @for (step of steps; track step.index) {
             <div class="d-flex align-items-center">
               <div
@@ -269,56 +269,56 @@
             <div class="row mb-3 g-3">
               <div class="col-12">
                 <label>Optional Coverage</label>
-                <ul class="list-group mt-1">
+                <ul class="coverage-list list-group mt-2">
                   <li class="list-group-item">
-                    <div class="form-check">
+                    <label class="coverage-option" for="individualTripCancellation">
                       <input
-                        class="form-check-input"
+                        class="form-check-input mt-0"
                         type="checkbox"
                         value=""
-                        id="checkDefault"
+                        id="individualTripCancellation"
                         formControlName="tripCancellation"
                       />
-                      <label class="form-check-label" for="checkDefault">
+                      <span>
                         Trip Cancellation Limit To 5000$ (Optional)
-                      </label>
-                    </div>
+                      </span>
+                    </label>
                   </li>
 
                   <li class="list-group-item">
-                    <div class="form-check">
+                    <label class="coverage-option" for="individualWinterSports">
                       <input
-                        class="form-check-input"
+                        class="form-check-input mt-0"
                         type="checkbox"
                         value=""
-                        id="checkDefault"
+                        id="individualWinterSports"
                         formControlName="winterSports"
                       />
-                      <label class="form-check-label" for="checkDefault">
+                      <span>
                         Winter Ski / Summer Sports Extension (Optional)
-                      </label>
-                    </div>
+                      </span>
+                    </label>
                   </li>
 
                   <li class="list-group-item">
-                    <div class="form-check">
+                    <label class="coverage-option" for="individualCovid19">
                       <input
-                        class="form-check-input"
+                        class="form-check-input mt-0"
                         type="checkbox"
                         value=""
-                        id="checkDefault"
+                        id="individualCovid19"
                         formControlName="covid19"
                       />
-                      <label class="form-check-label" for="checkDefault">
+                      <span>
                         COVID 19 up to 30000 Euro (Optional)
-                      </label>
-                    </div>
+                      </span>
+                    </label>
                   </li>
                 </ul>
               </div>
             </div>
 
-            <div class="d-flex align-items-start gap-2">
+            <div class="policy-form-actions d-flex align-items-start gap-2">
               @if (loadingPremium()) {
                 <div
                   class="alert alert-primary d-flex flex-column align-items-center col-5 mb-0"
