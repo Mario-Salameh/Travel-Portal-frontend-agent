@@ -37,17 +37,11 @@ export class PolicyRepository {
         } catch (e) { }
     }
 
-    public async printPolicy(policyRefNumber: string, isDraft: boolean): Promise<Blob | void> {
-        try {
-            const response = await this.apiService.invoke(reportsPolicyGet, {
-                isDraft: isDraft,
-                policyRefNumber: policyRefNumber
-            })
-
-            window.open(URL.createObjectURL(response))
-
-            return response;
-        } catch (e) { }
+    public async printPolicy(policyRefNumber: string, isDraft: boolean): Promise<Blob> {
+        return await this.apiService.invoke(reportsPolicyGet, {
+            isDraft: isDraft,
+            policyRefNumber: policyRefNumber
+        });
     }
 
     public async calculatePremium(data: CalculatePremiumRequestDto[]): Promise<number> {

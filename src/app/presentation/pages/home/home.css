@@ -91,8 +91,12 @@
     display: flex;
     align-items: center;
     gap: 0.625rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     min-width: 0;
     font-weight: 600;
+    white-space: nowrap;
   }
 
   .portal-mobile-brand img {

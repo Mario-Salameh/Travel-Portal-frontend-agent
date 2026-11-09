@@ -269,23 +269,36 @@ export class PolicyDetails {
       return;
     }
 
-  this.appService.isLoading.set('Preparing Policy Document');
-
-  const key = this.isGroupPolicy()
-    ? (this.groupPolicy().policyNumber ?? '')
-    : (this.singlePolicy().referenceKey ?? '');
-
-  try {
-    await this.policyRepository.printPolicy(key, this.isDraft);
-
-    // Hide Draft and Update Policy only after printing Original.
-    if (!this.isDraft) {
-      this.originalPolicyGenerated = true;
+    const printWindow = window.open('about:blank', '_blank');
+    if (!printWindow) {
+      this.dialogService.openDialog(
+        'Allow pop-ups to open the policy document, then try again.',
+        'error',
+      );
+      return;
     }
-  } finally {
-    this.appService.isLoading.set(null);
+
+    this.appService.isLoading.set('Preparing Policy Document');
+
+    const key = this.isGroupPolicy()
+      ? (this.groupPolicy().policyNumber ?? '')
+      : (this.singlePolicy().referenceKey ?? '');
+
+    try {
+      const document = await this.policyRepository.printPolicy(key, this.isDraft);
+      printWindow.location.href = URL.createObjectURL(document);
+
+      // Hide Draft and Update Policy only after printing Original.
+      if (!this.isDraft) {
+        this.originalPolicyGenerated = true;
+      }
+    } catch {
+      printWindow.close();
+      this.dialogService.openDialog('Unable to open the policy document. Please try again.', 'error');
+    } finally {
+      this.appService.isLoading.set(null);
+    }
   }
-}
 
   updatePolicy(): void {
     if (this.isGroupPolicy()) {
