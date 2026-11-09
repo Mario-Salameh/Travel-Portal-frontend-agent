@@ -15,10 +15,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideEchartsCore({ echarts }),
 
-    provideApiConfiguration("http://10.10.110.3:1229")
+    // provideApiConfiguration("http://10.10.110.3:1229")
 
     // Local Testing
-    // provideApiConfiguration("http://localhost:5012")
+    provideApiConfiguration("http://localhost:5012")
     // provideApiConfiguration("http://10.10.11.97:5012")
   ]
 };
